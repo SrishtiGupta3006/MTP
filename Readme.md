@@ -19,7 +19,6 @@ This README documents **all algorithmic files inside `Source/`** and **all Loggi
 Source/
     Automata.py
     Enforcer.py
-    CompositionalEnforcer.py
     ExclusiveMonoEnforcer.py
     ExclusiveParallelEnforcer.py
 
@@ -44,25 +43,17 @@ Defines the DFA class with states, alphabet, transitions, acceptance, and runner
 ## 2. Enforcer.py
 Implements the **Ideal Enforcer**, computing the longest accepted prefix of an input trace.
 
-## 3. CompositionalEnforcer.py
-Contains:
-- AND/OR product DFA
-- Least-effort monolithic enforcer
-- Serial compositional enforcer
-- Parallel compositional enforcer (non-exclusive)
-- σc / σs buffer-based enforcement logic
-
-## 4. ExclusiveMonoEnforcer.py
+## 3. ExclusiveMonoEnforcer.py
 Implements **Exclusive Modified Automata (A′)** by:
 - Adding don’t-care states
 - Redirecting interfering deciding events
 - Producing A1′ and A2′
 
-## 5. ExclusiveParallelEnforcer.py
+## 4. ExclusiveParallelEnforcer.py
 Implements **Algorithm 7 — Exclusive Parallel Enforcer** with:
 - `σc`, `σs` buffers
 
-## 6. Exclusive Modified Automata (A′)
+## 5. Exclusive Modified Automata (A′)
 
 For each original DFA A, its exclusive version A′ is constructed as:
 

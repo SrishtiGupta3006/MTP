@@ -7,7 +7,7 @@ from contextlib import redirect_stdout
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Source')))
 
-from ExclusiveMonoEnforcer import A1_mod, A2_mod
+from exclusive_mono import A1_mod, A2_mod
 from Enforcer import enforcer
 
 input_trace = ['f', 'o', 'f', 'o', 'l', 'n']

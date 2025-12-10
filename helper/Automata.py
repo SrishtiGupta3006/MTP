@@ -1,7 +1,6 @@
-#####Imports####################
-from copy import deepcopy
-###############################
+# Automata.py
 
+from copy import deepcopy
 
 def ts(x):
     return tuple(sorted(x))

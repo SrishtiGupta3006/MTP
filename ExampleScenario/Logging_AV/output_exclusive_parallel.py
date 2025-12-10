@@ -1,12 +1,13 @@
-# OutputParallelExclusive.py
+# output_exclusive_parallel.py
 
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Source')))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.insert(0, project_root)
 
-from ExclusiveParallelEnforcer import ExclusiveParallelEnforcer
-from ExclusiveMonoEnforcer import A1_mod, A2_mod
+from Source.exclusive_parallel import ExclusiveParallelEnforcer
+from Source.exclusive_mono import A1_mod, A2_mod
 
 
 enf = ExclusiveParallelEnforcer([A1_mod, A2_mod])
@@ -14,7 +15,7 @@ enf = ExclusiveParallelEnforcer([A1_mod, A2_mod])
 print("Interactive Exclusive Parallel Enforcer")
 print("Enter events one by one (valid: f, o, l, n). Type 'exit' to stop.\n")
 
-final_output = ""   # accumulated global output
+final_output = ""             # accumulated global output
 
 # interactive loop 
 

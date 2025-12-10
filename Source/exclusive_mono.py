@@ -1,7 +1,7 @@
 # ExclusiveMonoEnforcer.py
 
-from Automata import DFA
-from Enforcer import enforcer
+from helper.Automata import DFA
+from Source.Enforcer import enforcer
 
 
 def modify_for_exclusive(orig_dfa, own_deciding, other_deciding):

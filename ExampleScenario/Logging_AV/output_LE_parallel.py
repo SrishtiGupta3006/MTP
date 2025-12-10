@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """
-LEParallelOutputComp.py
+output_LE_parallel.py
 
 Interactive simulation of Least Effort Parallel Enforcer (OR of all enforcer outputs).
 """
 
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../Source'))
-import CompositionalEnforcer as CE
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+from helper.Automata import DFA
+from Source.least_effort_parallel import LeastEffortParallelEnforcer
+
 
 #  Define states and transitions ----------------------
+
 states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
 
 transition_dict = {
@@ -81,7 +85,7 @@ transition_dict = {
 
 # DFAs ----------------------
 
-phi1 = CE.DFA(
+phi1 = DFA(
     "Property1",
     ['r', 'l', 'f', 'b', 's', 'u', 'd'],
     states,
@@ -91,7 +95,7 @@ phi1 = CE.DFA(
     ['right']
 )
 
-phi2 = CE.DFA(
+phi2 = DFA(
     "Property2",
     ['r', 'l', 'f', 'b', 's', 'u', 'd'],
     states,
@@ -101,7 +105,7 @@ phi2 = CE.DFA(
     ['right','left']
 )
 
-phi3 = CE.DFA(
+phi3 = DFA(
     "Property3",
     ['r', 'l', 'f', 'b', 's', 'u', 'd'],
     states,
@@ -112,8 +116,9 @@ phi3 = CE.DFA(
 )
 
 # Least Effort Parallel Enforcer --------------------
+
 enforcers = [phi1, phi2, phi3]
-le_parallel_enforcer = CE.LeastEffortParallelEnforcer(enforcers)
+le_parallel_enforcer = LeastEffortParallelEnforcer(enforcers)
 
 print("Enter actions one by one (r, l, f, b, s, u, d). Type 'end' to finish.\n")
 running_output = []

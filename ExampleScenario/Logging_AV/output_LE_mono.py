@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 """
-OutputComp.py
+output_LE_mono.py
 
 Interactive simulation of least-effort OR-product enforcer.
 """
 
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../Source'))
-import CompositionalEnforcer as CE
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+from helper.Automata import DFA
+from Source.least_effort_mono import least_effort_monolithic_enforcer
 
 
 # Defining states and transitions ----------------------
+
 states = ['stop', 'start', 'right', 'left', 'forward', 'back']
 
 transition_dict = {
@@ -54,7 +58,8 @@ transition_dict = {
 }
 
 # Define DFAs ----------------------
-phi1 = CE.DFA(
+
+phi1 = DFA(
     "Property1",
     ['r', 'l', 'f', 'b', 's'],
     states,
@@ -64,18 +69,18 @@ phi1 = CE.DFA(
     ['right']
 )
 
-phi2 = CE.DFA(
+phi2 = DFA(
     "Property2",
     ['r', 'l', 'f', 'b', 's'],
     states,
     'start',
-    lambda q: q in ['left'],       # accepting state
+    lambda q: q in ['left'],                # accepting state
     lambda q, a: transition_dict[(q, a)],
     ['left']
 )
 
 # Least Effort Monolithic Enforcer (OR-Product) ------------------------
-enforcer_fn = CE.least_effort_monolithic_enforcer("OR_Product", phi1, phi2)
+enforcer_fn = least_effort_monolithic_enforcer("OR_Product", phi1, phi2)
 
 running_output = []
 

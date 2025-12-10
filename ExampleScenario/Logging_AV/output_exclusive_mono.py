@@ -1,15 +1,14 @@
-# OutputMonoExclusive.py
+# output_exclusive_mono.py
 
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../source")))
-
-from CompositionalEnforcer import product
-from ExclusiveMonoEnforcer import A1_mod, A2_mod
+from helper.product import product
+from Source.exclusive_mono import A1_mod, A2_mod
 
 
-# Building the Exclusive Monolithic Product DFA
+# Exclusive Monolithic Product DFA
 
 print("\n --- Exclusive Monolithic Product DFA ---")
 

@@ -3,9 +3,9 @@
 import sys
 import os
 
-# Import modified DFAs from same folder
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from Automata import DFA
+
+from helper.Automata import DFA
 
 
 # Helper DFA functions
