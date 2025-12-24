@@ -75,3 +75,6 @@ Thumbs.db
 Source/__pycache__/
 helper/__pycache__/
 ExampleScenario/**/__pycache__/
+
+# Python cache
+*.pyc

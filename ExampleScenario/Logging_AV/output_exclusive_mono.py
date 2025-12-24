@@ -1,56 +1,43 @@
-# output_exclusive_mono.py
+#!/usr/bin/env python3
 
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../")
+)
+sys.path.append(PROJECT_ROOT)
 
 from helper.product import product
-from Source.exclusive_mono import A1_mod, A2_mod
+from Source.exclusive_modified_automata import A1_mod, A2_mod
+from Source.exclusive_mono import ExclusiveMonolithicEnforcer
 
+# Build Exclusive Monolithic Enforcer
 
-# Exclusive Monolithic Product DFA
+A_and = product(A1_mod, A2_mod, "Exclusive_Mono")
+enforcer = ExclusiveMonolithicEnforcer(A_and)
 
-print("\n --- Exclusive Monolithic Product DFA ---")
+print("\n=== Exclusive Monolithic Enforcer (Algorithm 6) ===")
+print("Valid inputs: [ f, l, o, n ]")
+print("Type 'end' to stop\n")
 
-# AND-product of the modified DFAs A1′ and A2′
-A_and = product(A1_mod, A2_mod, 'Exclusive Product')
-
-print(f"\nInitial state: {A_and.q0}")
-print(f"Total states: {len(A_and.Q)}")
-
-print("\nAccepting states:")
-for q in A_and.Q:
-    if A_and.F(q):
-        print(" ", q)
-
-# Interactive Simulation
-
-print("\n--- Interactive Simulation ---")
-print("Enter events one by one (valid: f, l, o, n). Type 'exit' to stop.\n")
-
-state = A_and.q0
+# Interactive loop
 
 while True:
-    a = input("Event: ").strip()
+    a = input("Input event: ").strip()
 
-    # Exit condition
-    if a == "exit":
-        print("Exiting simulation.")
+    if a == "end":
+        print("\nStopping execution.")
+        print("Final output:", enforcer.output)
         break
 
-    # Symbol validation
     if a not in A_and.S:
-        print("Invalid event.")
+        print("Invalid symbol!")
         continue
 
-    # Computing next state
-    next_state = A_and.d(state, a)
-    if next_state is None:
-        print(f"No transition from {state} on {a}.")
-        break
+    released = enforcer.step(a)
+    tentative, committed = enforcer.debug_state()
 
-    print(f"{state} --{a}--> {next_state}")
-    state = next_state
-
-print(f"\nFinal state: {state}")
-print("Accepted" if A_and.F(state) else "Rejected")
+    print(f"  Buffer σc           : {enforcer.sigma_c}")
+    print(f"  state               : {tentative}")
+    print(f"  Final Output so far : {released} \n")

@@ -9,7 +9,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from helper.Automata import DFA
+from helper.product import DFA
 from Source.least_effort_parallel import LeastEffortParallelEnforcer
 
 

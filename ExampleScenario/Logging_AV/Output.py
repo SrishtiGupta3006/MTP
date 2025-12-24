@@ -1,6 +1,6 @@
-#######imports########################################
 import sys
-import os.path
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 sys.path.append("../")
 from pathlib import Path

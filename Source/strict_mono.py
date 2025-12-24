@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
 strict_mono.py
-
 """
 
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper.product import product_and
-
+from Source.Enforcer import enforcer
 
 def monolithic_enforcer(name, *D):
 

@@ -6,26 +6,32 @@ strict_serial.py
 import sys
 sys.path.append("..")
 
-from Enforcer import enforcer
+from Source.Enforcer import enforcer
 
 
 def serial_enforcer(name, *D):
     """
-    Enforce DFAs sequentially:
-        Input → DFA1 → DFA2 → DFA3 → ... → DFAn
-
-    Returns both the final output and intermediate outputs.
-
+    Strict Serial Enforcer:
+    Input → DFA1 → DFA2 → ... → DFAn
     """
 
-    def serial_apply(sigma, maxBuffer=5):
+    def serial_apply(sigma):
         assert len(D) > 0, "No DFAs provided."
+
         current_output = list(sigma)
         individual_outputs = {}
 
         for i, dfa in enumerate(D):
             dfa_name = getattr(dfa, 'name', f"Property_{i}")
-            current_output = enforcer(dfa, current_output, maxBuffer)
+
+            # ✅ buffer size = number of DFA states
+            buffer_size = len(dfa.Q)
+
+            current_output = enforcer( dfa, current_output, maxBuffer=buffer_size)
+
+            if current_output is None:
+                current_output = []
+
             individual_outputs[dfa_name] = current_output.copy()
 
         return current_output, individual_outputs
@@ -33,9 +39,6 @@ def serial_enforcer(name, *D):
     return serial_apply
 
 
-# Optional alias:
+# Optional alias
 def strict_serial(name, *D):
-    """
-    Wrapper alias: strict_serial ≡ serial_enforcer
-    """
     return serial_enforcer(name, *D)
