@@ -30,8 +30,10 @@ from helper.product import product
 
 from Source.least_effort_mono import least_effort_monolithic_enforcer
 from Source.least_effort_parallel import LeastEffortParallelEnforcer
+
 from Source.strict_mono import monolithic_enforcer
 from Source.strict_serial import serial_enforcer
+from Source.strict_parallel import StrictParallelEnforcer
 
 from Source.exclusive_modified_automata import A1_mod, A2_mod
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
@@ -97,6 +99,11 @@ enforcers = {
         "alphabet": ['r','l','f','b','s'],
         "type": "serial"
     },
+    "Strict_Parallel": {
+        "factory": lambda: StrictParallelEnforcer([phi1, phi2]),
+        "alphabet": ['r','l','f','b','s'],
+        "type": "strict_parallel"
+    },
     "Exclusive_Monolithic": {
         "factory": lambda: ExclusiveMonolithicEnforcer(exclusive_mono_dfa),
         "alphabet": ['f','l','o','n'],
@@ -128,6 +135,10 @@ def time_enforcer(enf, enf_type, input_list):
     elif enf_type == "parallel":
         for a in input_list:
             enf.process_event(a)
+    
+    elif enf_type == "strict_parallel":
+        for a in input_list:
+            enf.step(a)
 
     elif enf_type == "serial":
         with contextlib.redirect_stdout(io.StringIO()):
@@ -166,9 +177,9 @@ for name, cfg in enforcers.items():
 
 # Save CSV
 
-with open("scaling_results.csv", "w", newline="") as f:
+with open("performance_results.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(["Enforcer", "Input Size", "Total Time (s)"])
     writer.writerows(results)
 
-print("\nSaved scaling_results.csv")
+print("\nSaved performance_results.csv")

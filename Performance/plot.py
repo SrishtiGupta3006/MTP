@@ -4,7 +4,7 @@ from collections import defaultdict
 
 data = defaultdict(list)
 
-with open("scaling_results.csv", "r") as f:
+with open("performance_results.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         enforcer = row["Enforcer"]
@@ -21,7 +21,8 @@ for k in data:
 groups = {
     "Strict Enforcers": [
         "Strict_Monolithic",
-        "Strict_Serial"
+        "Strict_Serial",
+        "Strict_Parallel"
     ],
     "Least Effort Enforcers": [
         "LE_Monolithic",
