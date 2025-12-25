@@ -9,19 +9,18 @@ PROJECT_ROOT = os.path.abspath(
 sys.path.append(PROJECT_ROOT)
 
 from helper.product import product
-from Source.exclusive_modified_automata import A1_mod, A2_mod
+from Source.exclusive_modified_automata import get_all_exclusive_modified
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
 
-# Build Exclusive Monolithic Enforcer
 
-A_and = product(A1_mod, A2_mod, "Exclusive_Mono")
+# Build Exclusive Monolithic Enforcer (n-ary, automatic)
+mods = get_all_exclusive_modified()
+A_and = product(*mods, "Exclusive_Mono")
 enforcer = ExclusiveMonolithicEnforcer(A_and)
 
-print("\n=== Exclusive Monolithic Enforcer (Algorithm 6) ===")
-print("Valid inputs: [ f, l, o, n ]")
+print("\n=== Exclusive Monolithic Enforcer ===")
+print("Valid inputs: [ f, l, o, n, r ]")
 print("Type 'end' to stop\n")
-
-# Interactive loop
 
 while True:
     a = input("Input event: ").strip()
