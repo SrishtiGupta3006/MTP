@@ -9,7 +9,7 @@ PROJECT_ROOT = os.path.abspath(
 sys.path.append(PROJECT_ROOT)
 
 from helper.product import product
-from Source.exclusive_modified_automata import get_all_exclusive_modified
+from helper.exclusive_modified_automata import get_all_exclusive_modified
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
 
 

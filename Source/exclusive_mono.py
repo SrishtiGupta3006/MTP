@@ -3,7 +3,6 @@
 exclusive_mono.py
 
 Exclusive Monolithic Enforcer
-(Algorithm 6 from the paper)
 """
 
 class ExclusiveMonolithicEnforcer:

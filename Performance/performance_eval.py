@@ -35,9 +35,12 @@ from Source.strict_mono import monolithic_enforcer
 from Source.strict_serial import serial_enforcer
 from Source.strict_parallel import StrictParallelEnforcer
 
-from Source.exclusive_modified_automata import A1_mod, A2_mod
+from helper.exclusive_modified_automata import get_all_exclusive_modified
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
 from Source.exclusive_parallel import ExclusiveParallelEnforcer
+
+# Get all modified DFAs A′₁ … A′ₙ
+exclusive_modified_dfas = get_all_exclusive_modified()
 
 # Define phi1 and phi2 (used for LE & Strict)
 
@@ -74,7 +77,7 @@ phi2 = ProductDFA(
 
 # Exclusive Monolithic DFA (A′₁ ⊗ A′₂)
 
-exclusive_mono_dfa = product(A1_mod, A2_mod, "Exclusive_Mono")
+exclusive_mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
 
 # Enforcer
 
@@ -106,12 +109,12 @@ enforcers = {
     },
     "Exclusive_Monolithic": {
         "factory": lambda: ExclusiveMonolithicEnforcer(exclusive_mono_dfa),
-        "alphabet": ['f','l','o','n'],
+        "alphabet": list(exclusive_modified_dfas[0].S),
         "type": "exclusive_monolithic"
     },
     "Exclusive_Parallel": {
-        "factory": lambda: ExclusiveParallelEnforcer([A1_mod, A2_mod]),
-        "alphabet": ['f','l','o','n'],
+        "factory": lambda: ExclusiveParallelEnforcer(exclusive_modified_dfas),
+        "alphabet": list(exclusive_modified_dfas[0].S),
         "type": "exclusive_parallel"
     }
 }

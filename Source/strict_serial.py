@@ -24,7 +24,7 @@ def serial_enforcer(name, *D):
         for i, dfa in enumerate(D):
             dfa_name = getattr(dfa, 'name', f"Property_{i}")
 
-            # ✅ buffer size = number of DFA states
+            # buffer size = number of DFA states
             buffer_size = len(dfa.Q)
 
             current_output = enforcer( dfa, current_output, maxBuffer=buffer_size)

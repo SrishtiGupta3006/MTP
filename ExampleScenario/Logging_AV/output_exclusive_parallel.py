@@ -7,7 +7,7 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..
 sys.path.insert(0, project_root)
 
 from Source.exclusive_parallel import ExclusiveParallelEnforcer
-from Source.exclusive_modified_automata import get_all_exclusive_modified
+from helper.exclusive_modified_automata import get_all_exclusive_modified
 
 
 # get ALL modified DFAs A′₁, …, A′ₙ
