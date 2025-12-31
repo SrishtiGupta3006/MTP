@@ -1,6 +1,296 @@
 # dfa_definitions.py
 
-from helper.Automata import DFA
+from helper.product import DFA as PropertyDFA
+from helper.Automata import DFA as ExclusiveDFA    # For Exclusive properties
+
+# ======================================================
+# STRICT PARALLEL PROPERTY DFAs
+# ======================================================
+
+def strict_parallel_transitions():
+    return{
+        ('start','r'):'right',
+        ('start','l'):'left',
+        ('start','f'):'forward',
+        ('start','b'):'back',
+        ('start','s'):'stop',
+
+        ('right','r'):'right',
+        ('right','l'):'left',
+        ('right','f'):'forward',
+        ('right','b'):'back',
+        ('right','s'):'stop',
+
+        ('left','r'):'right',
+        ('left','l'):'left',
+        ('left','f'):'forward',
+        ('left','b'):'back',
+        ('left','s'):'stop',
+
+        ('forward','r'):'right',
+        ('forward','l'):'left',
+        ('forward','f'):'forward',
+        ('forward','b'):'back',
+        ('forward','s'):'stop',
+
+        ('back','r'):'right',
+        ('back','l'):'left',
+        ('back','f'):'forward',
+        ('back','b'):'back',
+        ('back','s'):'stop',
+
+        ('stop','r'):'stop', 
+        ('stop','l'):'stop',
+        ('stop','f'):'stop',
+        ('stop','b'):'stop',
+        ('stop','s'):'stop',
+    
+    }
+
+def Strict_parallel_phi1():
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = strict_parallel_transitions()
+
+    return PropertyDFA(
+        "phi1",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q == 'right',
+        lambda q, a: transition_dict[(q, a)],
+        ['right']
+    )
+
+
+def Strict_parallel_phi2():
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = strict_parallel_transitions()
+
+    return PropertyDFA(
+        "phi2",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q == 'left',
+        lambda q, a: transition_dict[(q, a)],
+        ['left']
+    )
+
+
+def get_all_Strict_parallel_dfas():
+    return [
+        Strict_parallel_phi1(),
+        Strict_parallel_phi2()
+    ]
+
+
+# ======================================================
+# LEAST-EFFORT MONOLITHIC PROPERTY DFAs
+# ======================================================
+
+def LE_mono_transitions():
+    return{
+        ('start', 'r'): 'right',
+        ('start', 'l'): 'left',
+        ('start', 'f'): 'forward',
+        ('start', 'b'): 'back',
+        ('start', 's'): 'stop',
+
+        ('right', 'r'): 'right',
+        ('right', 'l'): 'left',
+        ('right', 'f'): 'forward',
+        ('right', 'b'): 'back',
+        ('right', 's'): 'stop',
+
+        ('left', 'r'): 'right',
+        ('left', 'l'): 'left',
+        ('left', 'f'): 'forward',
+        ('left', 'b'): 'back',
+        ('left', 's'): 'stop',
+
+        ('forward', 'r'): 'right',
+        ('forward', 'l'): 'left',
+        ('forward', 'f'): 'forward',
+        ('forward', 'b'): 'back',
+        ('forward', 's'): 'stop',
+
+        ('back', 'r'): 'right',
+        ('back', 'l'): 'left',
+        ('back', 'f'): 'forward',
+        ('back', 'b'): 'back',
+        ('back', 's'): 'stop',
+
+        ('stop', 'r'): 'stop',
+        ('stop', 'l'): 'stop',
+        ('stop', 'f'): 'stop',
+        ('stop', 'b'): 'stop',
+        ('stop', 's'): 'stop',
+    }
+
+def LE_mono_phi1():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = LE_mono_transitions()
+
+    return PropertyDFA(
+        "Property1",
+        ['r', 'l', 'f', 'b', 's'],
+        states,
+        'start',
+        lambda q: q in ['right'],
+        lambda q, a: transition_dict[(q, a)],
+        ['right']
+    )
+
+
+def LE_mono_phi2():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = LE_mono_transitions()
+
+    return PropertyDFA(
+        "Property2",
+        ['r', 'l', 'f', 'b', 's'],
+        states,
+        'start',
+        lambda q: q in ['left'],
+        lambda q, a: transition_dict[(q, a)],
+        ['left']
+    )
+
+
+def get_all_LE_mono_dfas():
+    return [
+        LE_mono_phi1(),
+        LE_mono_phi2()
+    ]
+
+
+# ======================================================
+# LEAST-EFFORT PARALLEL PROPERTY DFAs
+# ======================================================
+
+def LE_parallel_transitions():
+    return {
+        ('start','r'):'right',
+        ('start','l'):'left',
+        ('start','f'):'forward',
+        ('start','b'):'back',
+        ('start','u'):'up',
+        ('start','d'):'down',
+        ('start','s'):'stop',
+
+        ('right','r'):'right',
+        ('right','l'):'left',
+        ('right','f'):'forward',
+        ('right','b'):'back',
+        ('right','u'):'up',
+        ('right','d'):'down',
+        ('right','s'):'stop',
+
+        ('left','r'):'right',
+        ('left','l'):'left',
+        ('left','f'):'forward',
+        ('left','b'):'back',
+        ('left','u'):'up',
+        ('left','d'):'down',
+        ('left','s'):'stop',
+
+        ('forward','r'):'right',
+        ('forward','l'):'left',
+        ('forward','f'):'forward',
+        ('forward','b'):'back',
+        ('forward','u'):'up',
+        ('forward','d'):'down',
+        ('forward','s'):'stop',
+
+        ('back','r'):'right',
+        ('back','l'):'left',
+        ('back','f'):'forward',
+        ('back','b'):'back',
+        ('back','u'):'up',
+        ('back','d'):'down',
+        ('back','s'):'stop',
+
+        ('up','r'):'right',
+        ('up','l'):'left',
+        ('up','f'):'forward',
+        ('up','b'):'back',
+        ('up','u'):'up',
+        ('up','d'):'down',
+        ('up','s'):'stop',
+
+        ('down','r'):'right',
+        ('down','l'):'left',
+        ('down','f'):'forward',
+        ('down','b'):'back',
+        ('down','u'):'up',
+        ('down','d'):'down',
+        ('down','s'):'stop',
+
+        ('stop','r'):'stop',
+        ('stop','l'):'stop',
+        ('stop','f'):'stop',
+        ('stop','b'):'stop',
+        ('stop','u'):'up',
+        ('stop','d'):'down',
+        ('stop','s'):'stop',
+    }
+
+def LE_parallel_phi1():
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
+    transition_dict = LE_parallel_transitions()
+
+    return PropertyDFA(
+        "Property1",
+        ['r','l','f','b','s','u','d'],
+        states,
+        'start',
+        lambda q: q in ['right'],
+        lambda q, a: transition_dict[(q, a)],
+        ['right']
+    )
+
+def LE_parallel_phi2():
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
+    transition_dict = LE_parallel_transitions()
+
+    return PropertyDFA(
+        "Property2",
+        ['r','l','f','b','s','u','d'],
+        states,
+        'start',
+        lambda q: q in ['right', 'left'],
+        lambda q, a: transition_dict[(q, a)],
+        ['right', 'left']
+    )
+
+def LE_parallel_phi3():
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
+    transition_dict = LE_parallel_transitions()
+
+    return PropertyDFA(
+        "Property3",
+        ['r','l','f','b','s','u','d'],
+        states,
+        'start',
+        lambda q: q in ['left', 'forward'],
+        lambda q, a: transition_dict[(q, a)],
+        ['left', 'forward']
+    )
+
+
+def get_all_LE_parallel_dfas():
+    return [
+        LE_parallel_phi1(),
+        LE_parallel_phi2(),
+        LE_parallel_phi3()
+    ]
+
+
+# ======================================================
+# EXCLUSIVE PROPERTY DFAs
+# ======================================================
 
 # A1 : decides on 'l'
 def exclusive_phi1():
@@ -12,7 +302,7 @@ def exclusive_phi1():
         }
         return transitions[q].get(a, q)
 
-    A1 = DFA(
+    A1 = ExclusiveDFA(
         S={"f", "l", "o", "n", "r"},
         Q=["q0", "q1", "q2"],
         q0="q0",
@@ -34,7 +324,7 @@ def exclusive_phi2():
         }
         return transitions[q].get(a, q)
 
-    A2 = DFA(
+    A2 = ExclusiveDFA(
         S={"f", "l", "o", "n", "r"},
         Q=["p0", "p1", "p2"],
         q0="p0",
@@ -54,3 +344,4 @@ def get_all_dfas():
         exclusive_phi1(),
         exclusive_phi2()
     ]
+
