@@ -1,17 +1,6 @@
 #!/usr/bin/env python3
 """
 Scalability Performance Evaluation
-
-Evaluates total execution time for:
-- Least Effort Monolithic
-- Least Effort Parallel
-- Strict Monolithic
-- Strict Serial
-- Exclusive Monolithic (Algorithm 6)
-- Exclusive Parallel
-
-Input sizes:
-100, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000
 """
 
 import time
@@ -39,10 +28,17 @@ from helper.exclusive_modified_automata import get_all_exclusive_modified
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
 from Source.exclusive_parallel import ExclusiveParallelEnforcer
 
-# Get all modified DFAs A′₁ … A′ₙ
+
+# -------------------------------------------------
+# Exclusive DFAs (used for Exclusive Parallel)
+# -------------------------------------------------
+
 exclusive_modified_dfas = get_all_exclusive_modified()
 
-# Define phi1 and phi2 (used for LE & Strict)
+
+# -------------------------------------------------
+# Base DFAs (phi1, phi2)
+# -------------------------------------------------
 
 states = ['stop', 'start', 'right', 'left', 'forward', 'back']
 
@@ -75,11 +71,10 @@ phi2 = ProductDFA(
     ['left']
 )
 
-# Exclusive Monolithic DFA (A′₁ ⊗ A′₂)
 
-exclusive_mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
-
-# Enforcer
+# -------------------------------------------------
+# Enforcers
+# -------------------------------------------------
 
 enforcers = {
     "LE_Monolithic": {
@@ -93,9 +88,9 @@ enforcers = {
         "type": "parallel"
     },
     "Strict_Monolithic": {
-        "factory": lambda: monolithic_enforcer("SM", phi1, phi2),
+        "factory": lambda: None,   # product timed inside
         "alphabet": ['r','l','f','b','s'],
-        "type": "dfa_product"
+        "type": "strict_monolithic"
     },
     "Strict_Serial": {
         "factory": lambda: serial_enforcer("SS", phi1, phi2),
@@ -108,7 +103,7 @@ enforcers = {
         "type": "strict_parallel"
     },
     "Exclusive_Monolithic": {
-        "factory": lambda: ExclusiveMonolithicEnforcer(exclusive_mono_dfa),
+        "factory": lambda: None,   # modification + product timed inside
         "alphabet": list(exclusive_modified_dfas[0].S),
         "type": "exclusive_monolithic"
     },
@@ -119,66 +114,99 @@ enforcers = {
     }
 }
 
-# Input sizes
+INPUT_SIZES = [100,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000]
 
-INPUT_SIZES = [100, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
 
+# -------------------------------------------------
 # Helpers
+# -------------------------------------------------
 
 def generate_input(alphabet, n):
     return [random.choice(alphabet) for _ in range(n)]
 
+
 def time_enforcer(enf, enf_type, input_list):
-    t0 = time.time()
 
     if enf_type == "streaming":
+        t0 = time.time()
         for a in input_list:
             enf(a)
+        return time.time() - t0
 
     elif enf_type == "parallel":
+        t0 = time.time()
         for a in input_list:
             enf.process_event(a)
-    
+        return time.time() - t0
+
     elif enf_type == "strict_parallel":
+        t0 = time.time()
         for a in input_list:
             enf.step(a)
+        return time.time() - t0
 
     elif enf_type == "serial":
+        t0 = time.time()
         with contextlib.redirect_stdout(io.StringIO()):
             enf(input_list)
+        return time.time() - t0
 
-    elif enf_type == "dfa_product":
-        q = enf.q0
+    elif enf_type == "strict_monolithic":
+        t_prod_start = time.time()
+        dfa = monolithic_enforcer("SM", phi1, phi2)
+        t_prod = time.time() - t_prod_start
+
+        t_run_start = time.time()
+        q = dfa.q0
         for a in input_list:
-            q = enf.d(q, a)
+            q = dfa.d(q, a)
+        t_run = time.time() - t_run_start
+
+        return t_prod + t_run
 
     elif enf_type == "exclusive_monolithic":
+
+    # Product construction (modified DFAs already assumed available)
+        t_prod_start = time.time()
+        mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
+        mono_enf = ExclusiveMonolithicEnforcer(mono_dfa)
+        t_prod = time.time() - t_prod_start
+
+    # Runtime enforcement
+        t_run_start = time.time()
         for a in input_list:
-            enf.step(a)
+            mono_enf.step(a)
+        t_run = time.time() - t_run_start
+
+        return t_prod + t_run
+
 
     elif enf_type == "exclusive_parallel":
+        t0 = time.time()
         for a in input_list:
             enf.step(a)
+        return time.time() - t0
 
-    return time.time() - t0
 
-# Running evaluation
+# -------------------------------------------------
+# Run evaluation
+# -------------------------------------------------
 
 results = []
 
 for name, cfg in enforcers.items():
     print(f"\n----- {name} -----")
-
     for n in INPUT_SIZES:
-        enf = cfg["factory"]()          # 🔑 fresh instance every time
+        enf = cfg["factory"]()
         seq = generate_input(cfg["alphabet"], n)
-
         total = time_enforcer(enf, cfg["type"], seq)
-
         print(f"{name} | {n} events | {total:.6f} sec")
         results.append([name, n, total])
 
+
+# -------------------------------------------------
 # Save CSV
+# -------------------------------------------------
 
 with open("performance_results.csv", "w", newline="") as f:
     writer = csv.writer(f)

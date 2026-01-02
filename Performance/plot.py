@@ -2,6 +2,27 @@ import csv
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
+# ------------------------------
+# Global matplotlib styling
+# ------------------------------
+
+plt.rcParams.update({
+    "figure.figsize": (8, 5),
+    "figure.dpi": 150,
+    "font.size": 11,
+    "axes.labelsize": 12,
+    "axes.titlesize": 13,
+    "legend.fontsize": 10,
+    "xtick.labelsize": 10,
+    "ytick.labelsize": 10,
+    "lines.linewidth": 2,
+    "lines.markersize": 6,
+})
+
+# ------------------------------
+# Read CSV
+# ------------------------------
+
 data = defaultdict(list)
 
 with open("performance_results.csv", "r") as f:
@@ -12,11 +33,12 @@ with open("performance_results.csv", "r") as f:
         time_val = float(row["Total Time (s)"])
         data[enforcer].append((size, time_val))
 
-# Sort data by input size
 for k in data:
     data[k] = sorted(data[k], key=lambda x: x[0])
 
+# ------------------------------
 # Enforcer groups
+# ------------------------------
 
 groups = {
     "Strict Enforcers": [
@@ -34,7 +56,26 @@ groups = {
     ]
 }
 
-# Plotting each group separately
+# ------------------------------
+# Style rules (ALL solid, ALL circles)
+# ------------------------------
+
+STYLE_MONOLITHIC = dict(color="green", linestyle="-", marker="o")
+STYLE_PARALLEL   = dict(color="orange", linestyle="-", marker="o")
+STYLE_SERIAL     = dict(color="skyblue", linestyle="-", marker="o")
+
+def style_for(enforcer_name):
+    if "Monolithic" in enforcer_name:
+        return STYLE_MONOLITHIC
+    if "Parallel" in enforcer_name:
+        return STYLE_PARALLEL
+    if "Serial" in enforcer_name:
+        return STYLE_SERIAL
+    return {}
+
+# ------------------------------
+# Plotting
+# ------------------------------
 
 for title, enforcer_list in groups.items():
     plt.figure()
@@ -46,15 +87,24 @@ for title, enforcer_list in groups.items():
         x = [p[0] for p in data[enf]]
         y = [p[1] for p in data[enf]]
 
-        plt.plot(x, y, marker='o', label=enf)
+        plt.plot(
+            x,
+            y,
+            label=enf,
+            **style_for(enf)
+        )
 
-    plt.xlabel("Input Size")
+    plt.xlabel("Input Size (Number of Events)")
     plt.ylabel("Total Time (seconds)")
     plt.title(title)
-    plt.legend()
-    plt.grid(True)
+    plt.grid(True, linestyle="--", alpha=0.6)
 
-    # Save figure
+    # Optional: enable only if one curve dominates
+    # plt.yscale("log")
+
+    plt.legend(loc="best", frameon=True)
+    plt.tight_layout()
+
     filename = title.lower().replace(" ", "_") + ".png"
     plt.savefig(filename)
     plt.show()

@@ -335,6 +335,133 @@ def exclusive_phi2():
 
     return A2, {"n"}
 
+# A3 : decides on 'r'
+def exclusive_phi3():
+    def d3(q, a):
+        transitions = {
+            "s0": {"r": "s1", "f": "s0", "l": "s0", "o": "s0", "n": "s0"},
+            "s1": {"r": "s2", "f": "s1", "l": "s1", "o": "s1", "n": "s1"},
+            "s2": {"f": "s2", "l": "s2", "o": "s2", "n": "s2", "r": "s2"},
+        }
+        return transitions[q].get(a, q)
+
+    A3 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["s0", "s1", "s2"],
+        q0="s0",
+        F=lambda q: q == "s2",
+        d=d3
+    )
+    A3.name = "A3"
+
+    return A3, {"r"}
+
+# A4 : decides on 'o'
+def exclusive_phi4():
+    def d4(q, a):
+        transitions = {
+            "t0": {"o": "t1", "f": "t0", "l": "t0", "n": "t0", "r": "t0"},
+            "t1": {"o": "t2", "f": "t1", "l": "t1", "n": "t1", "r": "t1"},
+            "t2": {"f": "t2", "l": "t2", "o": "t2", "n": "t2", "r": "t2"},
+        }
+        return transitions[q].get(a, q)
+
+    A4 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["t0", "t1", "t2"],
+        q0="t0",
+        F=lambda q: q == "t2",
+        d=d4
+    )
+    A4.name = "A4"
+
+    return A4, {"o"}
+
+# A5 : decides on 'f'
+def exclusive_phi5():
+    def d5(q, a):
+        transitions = {
+            "u0": {"f": "u1", "l": "u0", "o": "u0", "n": "u0", "r": "u0"},
+            "u1": {"f": "u2", "l": "u1", "o": "u1", "n": "u1", "r": "u1"},
+            "u2": {"f": "u2", "l": "u2", "o": "u2", "n": "u2", "r": "u2"},
+        }
+        return transitions[q].get(a, q)
+
+    A5 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["u0", "u1", "u2"],
+        q0="u0",
+        F=lambda q: q == "u2",
+        d=d5
+    )
+    A5.name = "A5"
+
+    return A5, {"f"}
+
+# A6 : decides on 'r'
+def exclusive_phi6():
+    def d6(q, a):
+        transitions = {
+            "v0": {"r": "v1", "f": "v0", "l": "v0", "o": "v0", "n": "v0"},
+            "v1": {"r": "v2", "f": "v1", "l": "v1", "o": "v1", "n": "v1"},
+            "v2": {"r": "v2", "f": "v2", "l": "v2", "o": "v2", "n": "v2"},
+        }
+        return transitions[q].get(a, q)
+
+    A6 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["v0", "v1", "v2"],
+        q0="v0",
+        F=lambda q: q == "v2",
+        d=d6
+    )
+    A6.name = "A6"
+
+    return A6, {"r"}
+
+# A7 : decides on 'o'
+def exclusive_phi7():
+    def d7(q, a):
+        transitions = {
+            "w0": {"o": "w1", "f": "w0", "l": "w0", "n": "w0", "r": "w0"},
+            "w1": {"o": "w2", "f": "w1", "l": "w1", "n": "w1", "r": "w1"},
+            "w2": {"o": "w2", "f": "w2", "l": "w2", "n": "w2", "r": "w2"},
+        }
+        return transitions[q].get(a, q)
+
+    A7 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["w0", "w1", "w2"],
+        q0="w0",
+        F=lambda q: q == "w2",
+        d=d7
+    )
+    A7.name = "A7"
+
+    return A7, {"o"}
+
+# A8 : decides on 'n'
+def exclusive_phi8():
+    def d8(q, a):
+        transitions = {
+            "x0": {"n": "x1", "f": "x0", "l": "x0", "o": "x0", "r": "x0"},
+            "x1": {"n": "x2", "f": "x1", "l": "x1", "o": "x1", "r": "x1"},
+            "x2": {"n": "x2", "f": "x2", "l": "x2", "o": "x2", "r": "x2"},
+        }
+        return transitions[q].get(a, q)
+
+    A8 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["x0", "x1", "x2"],
+        q0="x0",
+        F=lambda q: q == "x2",
+        d=d8
+    )
+    A8.name = "A8"
+
+    return A8, {"n"}
+
+
 
 def get_all_dfas():
     """
@@ -342,6 +469,12 @@ def get_all_dfas():
     """
     return [
         exclusive_phi1(),
-        exclusive_phi2()
+        exclusive_phi2(),
+        exclusive_phi3(),
+        exclusive_phi4(),
+        exclusive_phi5(),
+        exclusive_phi6(),
+        exclusive_phi7(),
+        exclusive_phi8(),
     ]
 
