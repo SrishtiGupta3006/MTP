@@ -1,44 +1,60 @@
-#!/usr/bin/env python3
-"""
-strict_serial.py
-"""
+# Source/strict_serial.py
 
-import sys
-sys.path.append("..")
-
-from Source.Enforcer import enforcer
-
-
-def serial_enforcer(name, *D):
+class StrictSerialEnforcer:
     """
-    Strict Serial Enforcer:
-    Input → DFA1 → DFA2 → ... → DFAn
+    Strict Serial Enforcer
     """
 
-    def serial_apply(sigma):
-        assert len(D) > 0, "No DFAs provided."
+    def __init__(self, dfas):
+        assert isinstance(dfas, list) and len(dfas) > 0, "No DFAs provided"
 
-        current_output = list(sigma)
-        individual_outputs = {}
+        self.dfas = dfas
+        self.n = len(dfas)
 
-        for i, dfa in enumerate(D):
-            dfa_name = getattr(dfa, 'name', f"Property_{i}")
+        # One buffer σci and one state qi per DFA
+        self.sigma_c = {i: [] for i in range(self.n)}
+        self.q = {i: dfas[i].q0 for i in range(self.n)}
 
-            # buffer size = number of DFA states
-            buffer_size = len(dfa.Q)
+        self.output = []
 
-            current_output = enforcer( dfa, current_output, maxBuffer=buffer_size)
+    def delta_star(self, dfa, q, word):
 
-            if current_output is None:
-                current_output = []
+        for a in word:
+            q = dfa.d(q, a)
+        return q
 
-            individual_outputs[dfa_name] = current_output.copy()
+    def step(self, a):
 
-        return current_output, individual_outputs
+        sigma = [a]          # σ ← a
+        released = []
 
-    return serial_apply
+        for i, dfa in enumerate(self.dfas):
+            sigma_next = []  # σ' ← ε
+            qi = self.q[i]
+            sigma_ci = self.sigma_c[i]
 
+            for e in sigma:
+                new_state = self.delta_star(dfa, qi, sigma_ci + [e])
 
-# Optional alias
-def strict_serial(name, *D):
-    return serial_enforcer(name, *D)
+                if dfa.F(new_state):
+                    qi = new_state
+                    sigma_next.extend(sigma_ci + [e])
+                    sigma_ci.clear()
+                else:
+                    sigma_ci.append(e)
+
+            # Update local state and buffer
+            self.q[i] = qi
+            self.sigma_c[i] = sigma_ci
+
+            sigma = sigma_next
+
+            if not sigma:
+                break
+
+        # Release only after the last enforcer
+        if sigma:
+            released.extend(sigma)
+            self.output.extend(sigma)
+
+        return released

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 least_effort_parallel.py
-
 """
 
 import sys
@@ -12,14 +11,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper.product import DFA
 
 class LeastEffortParallelEnforcer:
-    """
-    Parallel least-effort enforcement:
-
-    - All enforcers see the same input
-    - Each tries to release a safe sequence
-    - Global output = OR-merge of all safe sequences
-
-    """
 
     def __init__(self, enforcers):
         self.enforcers = enforcers
@@ -32,10 +23,7 @@ class LeastEffortParallelEnforcer:
         self.output = []
 
     def process_event(self, a):
-        """
-        Feed input 'a' to all enforcers in parallel.
-        Returns OR-merged safe sequence.
-        """
+
         # appending event to each enforcer's buffer
         for i in range(self.n):
             self.candidate[i].append(a)
@@ -66,13 +54,13 @@ class LeastEffortParallelEnforcer:
 
             return released
 
-        return []  # nothing released
+        return []
 
     def get_output(self):
         return self.output
 
 
-# Optional alias (if you want a function-style constructor)
+# Optional alias
 def least_effort_parallel(enforcers):
 
     return LeastEffortParallelEnforcer(enforcers)

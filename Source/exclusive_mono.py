@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """
 exclusive_mono.py
-
-Exclusive Monolithic Enforcer
 """
 
 class ExclusiveMonolithicEnforcer:
@@ -17,10 +15,7 @@ class ExclusiveMonolithicEnforcer:
         self.output = []         # global output
 
     def _compute_tentative_state(self):
-        """
-        Computes the tentative DFA state after consuming σ_c
-        starting from committed state q.
-        """
+       
         temp = self.q
         for a in self.sigma_c:
             temp = self.dfa.d(temp, a)
@@ -29,10 +24,7 @@ class ExclusiveMonolithicEnforcer:
         return temp
 
     def step(self, a):
-        """
-        Process one input event.
-        Returns released prefix (possibly empty).
-        """
+        
 
          # Safety check
         if a not in self.dfa.S:
@@ -87,7 +79,5 @@ class ExclusiveMonolithicEnforcer:
         self.output = []
 
     def debug_state(self):
-        """
-        Returns (tentative_state, committed_state)
-        """
+
         return self._compute_tentative_state(), self.q

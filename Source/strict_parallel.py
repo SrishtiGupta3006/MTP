@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 """
 Strict Parallel Enforcer
-Algorithm 3 (Paper)
+
 """
 
 class StrictParallelEnforcer:
     def __init__(self, dfas):
-        """
-        dfas: list of DFAs (phi1, phi2, ..., phik)
-        """
+
         self.dfas = dfas
         self.k = len(dfas)
 
@@ -19,10 +17,6 @@ class StrictParallelEnforcer:
         self.output = []
 
     def step(self, a):
-        """
-        Process one input event a.
-        Returns released event or [].
-        """
 
         next_states = []
 
@@ -31,16 +25,13 @@ class StrictParallelEnforcer:
             qi = self.q[i]
             qi_next = dfa.d(qi, a)
 
-            # if any DFA blocks → suppress output
             if qi_next is None:
                 return []
 
             next_states.append(qi_next)
 
-        # all transitions valid → commit states
         self.q = next_states
 
-        # strict semantics: event is released
         self.output.append(a)
         return [a]
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Scalability Performance Evaluation
+Performance Evaluation
 """
 
 import time
@@ -14,112 +14,88 @@ import io
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
-from helper.product import DFA as ProductDFA
-from helper.product import product
+# Import DFA definitions 
+
+from helper.dfa_definitions import (
+    get_all_Strict_mono_dfas,
+    get_all_Strict_serial_dfas,
+    get_all_Strict_parallel_dfas,
+    get_all_LE_mono_dfas,
+    get_all_LE_parallel_dfas,
+)
+
+from helper.exclusive_modified_automata import get_all_exclusive_modified
+
+# Import Enforcers
 
 from Source.least_effort_mono import least_effort_monolithic_enforcer
 from Source.least_effort_parallel import LeastEffortParallelEnforcer
 
-from Source.strict_mono import monolithic_enforcer
-from Source.strict_serial import serial_enforcer
+from Source.strict_mono import StrictMonolithicEnforcer
+from Source.strict_serial import StrictSerialEnforcer
 from Source.strict_parallel import StrictParallelEnforcer
 
-from helper.exclusive_modified_automata import get_all_exclusive_modified
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
 from Source.exclusive_parallel import ExclusiveParallelEnforcer
 
+from helper.product import product
 
-# -------------------------------------------------
-# Exclusive DFAs (used for Exclusive Parallel)
-# -------------------------------------------------
+# Load DFAs
+
+strict_mono_dfas     = get_all_Strict_mono_dfas()
+strict_serial_dfas   = get_all_Strict_serial_dfas()
+strict_parallel_dfas = get_all_Strict_parallel_dfas()
+
+le_mono_dfas     = get_all_LE_mono_dfas()
+le_parallel_dfas = get_all_LE_parallel_dfas()
 
 exclusive_modified_dfas = get_all_exclusive_modified()
 
-
 # -------------------------------------------------
-# Base DFAs (phi1, phi2)
-# -------------------------------------------------
-
-states = ['stop', 'start', 'right', 'left', 'forward', 'back']
-
-transition_dict = {
-    ('start','r'):'right', ('start','l'):'left', ('start','f'):'forward', ('start','b'):'back', ('start','s'):'stop',
-    ('right','r'):'right', ('right','l'):'left', ('right','f'):'forward', ('right','b'):'back', ('right','s'):'stop',
-    ('left','r'):'right', ('left','l'):'left', ('left','f'):'forward', ('left','b'):'back', ('left','s'):'stop',
-    ('forward','r'):'right', ('forward','l'):'left', ('forward','f'):'forward', ('forward','b'):'back', ('forward','s'):'stop',
-    ('back','r'):'right', ('back','l'):'left', ('back','f'):'forward', ('back','b'):'back', ('back','s'):'stop',
-    ('stop','r'):'stop', ('stop','l'):'stop', ('stop','f'):'stop', ('stop','b'):'stop', ('stop','s'):'stop',
-}
-
-phi1 = ProductDFA(
-    "phi1",
-    ['r','l','f','b','s'],
-    states,
-    'start',
-    lambda q: q == 'right',
-    lambda q,a: transition_dict[(q,a)],
-    ['right']
-)
-
-phi2 = ProductDFA(
-    "phi2",
-    ['r','l','f','b','s'],
-    states,
-    'start',
-    lambda q: q == 'left',
-    lambda q,a: transition_dict[(q,a)],
-    ['left']
-)
-
-
-# -------------------------------------------------
-# Enforcers
+# Enforcer configurations
 # -------------------------------------------------
 
 enforcers = {
     "LE_Monolithic": {
-        "factory": lambda: least_effort_monolithic_enforcer("LE", phi1, phi2),
-        "alphabet": ['r','l','f','b','s'],
-        "type": "streaming"
+        "factory": lambda: least_effort_monolithic_enforcer("LE", *le_mono_dfas),
+        "alphabet": list(le_mono_dfas[0].S),
+        "type": "LE_monolithic",
     },
     "LE_Parallel": {
-        "factory": lambda: LeastEffortParallelEnforcer([phi1, phi2]),
-        "alphabet": ['r','l','f','b','s'],
-        "type": "parallel"
+        "factory": lambda: LeastEffortParallelEnforcer(le_parallel_dfas),
+        "alphabet": list(le_parallel_dfas[0].S),
+        "type": "LE_parallel",
     },
     "Strict_Monolithic": {
-        "factory": lambda: None,   # product timed inside
-        "alphabet": ['r','l','f','b','s'],
-        "type": "strict_monolithic"
+        "factory": lambda: None,   # handled inside timer
+        "alphabet": list(strict_mono_dfas[0].S),
+        "type": "strict_monolithic",
     },
     "Strict_Serial": {
-        "factory": lambda: serial_enforcer("SS", phi1, phi2),
-        "alphabet": ['r','l','f','b','s'],
-        "type": "serial"
+        "factory": lambda: StrictSerialEnforcer(strict_serial_dfas),
+        "alphabet": list(strict_serial_dfas[0].S),
+        "type": "strict_serial",
     },
     "Strict_Parallel": {
-        "factory": lambda: StrictParallelEnforcer([phi1, phi2]),
-        "alphabet": ['r','l','f','b','s'],
-        "type": "strict_parallel"
+        "factory": lambda: StrictParallelEnforcer(strict_parallel_dfas),
+        "alphabet": list(strict_parallel_dfas[0].S),
+        "type": "strict_parallel",
     },
     "Exclusive_Monolithic": {
-        "factory": lambda: None,   # modification + product timed inside
+        "factory": lambda: None,   # handled inside timer
         "alphabet": list(exclusive_modified_dfas[0].S),
-        "type": "exclusive_monolithic"
+        "type": "exclusive_monolithic",
     },
     "Exclusive_Parallel": {
         "factory": lambda: ExclusiveParallelEnforcer(exclusive_modified_dfas),
         "alphabet": list(exclusive_modified_dfas[0].S),
-        "type": "exclusive_parallel"
-    }
+        "type": "exclusive_parallel",
+    },
 }
 
-INPUT_SIZES = [100,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000]
+INPUT_SIZES = [100, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
 
-
-# -------------------------------------------------
 # Helpers
-# -------------------------------------------------
 
 def generate_input(alphabet, n):
     return [random.choice(alphabet) for _ in range(n)]
@@ -127,13 +103,13 @@ def generate_input(alphabet, n):
 
 def time_enforcer(enf, enf_type, input_list):
 
-    if enf_type == "streaming":
+    if enf_type == "LE_monolithic":
         t0 = time.time()
         for a in input_list:
             enf(a)
         return time.time() - t0
 
-    elif enf_type == "parallel":
+    elif enf_type == "LE_parallel":
         t0 = time.time()
         for a in input_list:
             enf.process_event(a)
@@ -145,41 +121,31 @@ def time_enforcer(enf, enf_type, input_list):
             enf.step(a)
         return time.time() - t0
 
-    elif enf_type == "serial":
+    elif enf_type == "strict_serial":
         t0 = time.time()
-        with contextlib.redirect_stdout(io.StringIO()):
-            enf(input_list)
+        for a in input_list:
+            enf.step(a)
         return time.time() - t0
 
     elif enf_type == "strict_monolithic":
-        t_prod_start = time.time()
-        dfa = monolithic_enforcer("SM", phi1, phi2)
-        t_prod = time.time() - t_prod_start
-
-        t_run_start = time.time()
-        q = dfa.q0
+        t0 = time.time()
+        enf = StrictMonolithicEnforcer(strict_mono_dfas)
         for a in input_list:
-            q = dfa.d(q, a)
-        t_run = time.time() - t_run_start
-
-        return t_prod + t_run
+            enf.step(a)
+        return time.time() - t0
 
     elif enf_type == "exclusive_monolithic":
-
-    # Product construction (modified DFAs already assumed available)
         t_prod_start = time.time()
         mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
         mono_enf = ExclusiveMonolithicEnforcer(mono_dfa)
         t_prod = time.time() - t_prod_start
 
-    # Runtime enforcement
         t_run_start = time.time()
         for a in input_list:
             mono_enf.step(a)
         t_run = time.time() - t_run_start
 
         return t_prod + t_run
-
 
     elif enf_type == "exclusive_parallel":
         t0 = time.time()
@@ -202,7 +168,6 @@ for name, cfg in enforcers.items():
         total = time_enforcer(enf, cfg["type"], seq)
         print(f"{name} | {n} events | {total:.6f} sec")
         results.append([name, n, total])
-
 
 # -------------------------------------------------
 # Save CSV

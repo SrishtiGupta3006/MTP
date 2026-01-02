@@ -2,7 +2,6 @@
 """
 output_LE_mono.py
 
-Interactive simulation of least-effort OR-product enforcer.
 """
 
 import sys

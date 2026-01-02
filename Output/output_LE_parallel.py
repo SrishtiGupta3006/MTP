@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
 output_LE_parallel.py
-
-Interactive simulation of Least Effort Parallel Enforcer
-(OR of all enforcer outputs).
 """
 
 import sys
@@ -18,7 +15,6 @@ from helper.dfa_definitions import (
 from Source.least_effort_parallel import LeastEffortParallelEnforcer
 
 # Load DFAs
-
 
 enforcers = [
     LE_parallel_phi1(),

@@ -2,9 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
-# ------------------------------
 # Global matplotlib styling
-# ------------------------------
 
 plt.rcParams.update({
     "figure.figsize": (8, 5),
@@ -19,9 +17,7 @@ plt.rcParams.update({
     "lines.markersize": 6,
 })
 
-# ------------------------------
 # Read CSV
-# ------------------------------
 
 data = defaultdict(list)
 
@@ -36,9 +32,7 @@ with open("performance_results.csv", "r") as f:
 for k in data:
     data[k] = sorted(data[k], key=lambda x: x[0])
 
-# ------------------------------
 # Enforcer groups
-# ------------------------------
 
 groups = {
     "Strict Enforcers": [
@@ -56,9 +50,7 @@ groups = {
     ]
 }
 
-# ------------------------------
-# Style rules (ALL solid, ALL circles)
-# ------------------------------
+# Style rules
 
 STYLE_MONOLITHIC = dict(color="green", linestyle="-", marker="o")
 STYLE_PARALLEL   = dict(color="orange", linestyle="-", marker="o")
@@ -73,9 +65,7 @@ def style_for(enforcer_name):
         return STYLE_SERIAL
     return {}
 
-# ------------------------------
 # Plotting
-# ------------------------------
 
 for title, enforcer_list in groups.items():
     plt.figure()
@@ -98,9 +88,6 @@ for title, enforcer_list in groups.items():
     plt.ylabel("Total Time (seconds)")
     plt.title(title)
     plt.grid(True, linestyle="--", alpha=0.6)
-
-    # Optional: enable only if one curve dominates
-    # plt.yscale("log")
 
     plt.legend(loc="best", frameon=True)
     plt.tight_layout()
