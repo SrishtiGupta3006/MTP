@@ -128,8 +128,9 @@ def time_enforcer(enf, enf_type, input_list):
         return time.time() - t0
 
     elif enf_type == "strict_monolithic":
-        t0 = time.time()
         enf = StrictMonolithicEnforcer(strict_mono_dfas)
+        
+        t0 = time.time()
         for a in input_list:
             enf.step(a)
         return time.time() - t0

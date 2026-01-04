@@ -85,7 +85,7 @@ def Strict_serial_phi3():
     transition_dict = strict_serial_transitions()
 
     return PropertyDFA(
-        "phi3_stop",
+        "phi3",
         ['r','l','f','b','s'],
         states,
         'start',
@@ -100,21 +100,89 @@ def Strict_serial_phi4():
     transition_dict = strict_serial_transitions()
 
     return PropertyDFA(
-        "phi4_stop",
+        "phi4",
         ['r','l','f','b','s'],
         states,
         'start',
-        lambda q: q == 'back',
+        lambda q: q == 'forward',
         lambda q,a: transition_dict[(q,a)],
-        ['back']
+        ['forward']
     )
+
+def Strict_serial_phi5():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_serial_transitions()
+
+    return PropertyDFA(
+        "phi5",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'back','left'},
+        lambda q, a: transition_dict[(q, a)],
+        ['back', 'left']
+    )
+
+
+def Strict_serial_phi6():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_serial_transitions()
+
+    return PropertyDFA(
+        "phi6",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'forward','left'},
+        lambda q, a: transition_dict[(q, a)],
+        ['forward','left']
+    )
+
+
+def Strict_serial_phi7():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_serial_transitions()
+
+    return PropertyDFA(
+        "phi7",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'right','left'},
+        lambda q, a: transition_dict[(q, a)],
+        ['right','left']
+    )
+
+
+def Strict_serial_phi8():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_serial_transitions()
+
+    return PropertyDFA(
+        "phi8",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'start','left'},
+        lambda q, a: transition_dict[(q, a)],
+        ['start','left']
+    )
+
 
 def get_all_Strict_serial_dfas():
     return [
         Strict_serial_phi1(),
         Strict_serial_phi2(),
         Strict_serial_phi3(),
-        Strict_serial_phi4()
+        Strict_serial_phi4(),
+        Strict_serial_phi5(),
+        Strict_serial_phi6(),
+        Strict_serial_phi7(),
+        Strict_serial_phi8(),
     ]
 
 # ======================================================
@@ -161,71 +229,139 @@ def strict_mono_transitions():
     }
 
 def Strict_mono_phi1():
+
     states = ['start','right','left','forward','back','stop']
-    delta = strict_mono_transitions()
+    transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
-        "mono_phi1_right",
+        "phi1",
         ['r','l','f','b','s'],
         states,
         'start',
         lambda q: q in {'right', 'left'},
-        lambda q, a: delta[(q, a)],
+        lambda q, a: transition_dict[(q, a)],
         []
     )
 
 
 def Strict_mono_phi2():
+
     states = ['start','right','left','forward','back','stop']
-    delta = strict_mono_transitions()
+    transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
-        "mono_phi2_left",
+        "phi2",
         ['r','l','f','b','s'],
         states,
         'start',
-        lambda q: 'left' in q,
-        lambda q, a: delta[(q, a)],
+        lambda q:q == 'left',
+        lambda q, a: transition_dict[(q, a)],
         []
     )
 
 
 def Strict_mono_phi3():
+
     states = ['start','right','left','forward','back','stop']
-    delta = strict_mono_transitions()
+    transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
-        "mono_phi3_stop",
+        "phi3",
         ['r','l','f','b','s'],
         states,
         'start',
         lambda q: q in {'forward', 'left'} ,
-        lambda q, a: delta[(q, a)],
+        lambda q, a: transition_dict[(q, a)],
         []
     )
 
 def Strict_mono_phi4():
+
     states = ['start','right','left','forward','back','stop']
-    delta = strict_mono_transitions()
+    transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
-        "mono_phi4_stop",
+        "phi4",
         ['r','l','f','b','s'],
         states,
         'start',
         lambda q: q in {'back', 'left'} ,
-        lambda q, a: delta[(q, a)],
+        lambda q, a: transition_dict[(q, a)],
+        []
+    )
+
+def Strict_mono_phi5():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_mono_transitions()
+
+    return PropertyDFA(
+        "phi5",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q == 'right',
+        lambda q, a: transition_dict[(q, a)],
+        []
+    )
+
+def Strict_mono_phi6():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_mono_transitions()
+
+    return PropertyDFA(
+        "phi6",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q == 'left',
+        lambda q, a: transition_dict[(q, a)],
+        []
+    )
+
+def Strict_mono_phi7():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_mono_transitions()
+
+    return PropertyDFA(
+        "phi7",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q == 'forward',
+        lambda q, a: transition_dict[(q, a)],
+        []
+    )
+
+def Strict_mono_phi8():
+
+    states = ['start','right','left','forward','back','stop']
+    transition_dict = strict_mono_transitions()
+
+    return PropertyDFA(
+        "phi8",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q == 'back',
+        lambda q, a: transition_dict[(q, a)],
         []
     )
 
 def get_all_Strict_mono_dfas():
-
     return [
         Strict_mono_phi1(),
         Strict_mono_phi2(),
         Strict_mono_phi3(),
-        Strict_mono_phi4()
+        Strict_mono_phi4(),
+        Strict_mono_phi5(),
+        Strict_mono_phi6(),
+        Strict_mono_phi7(),
+        Strict_mono_phi8(),
     ]
+
 
 # ======================================================
 # STRICT PARALLEL PROPERTY DFAs
@@ -272,6 +408,7 @@ def strict_parallel_transitions():
     }
 
 def Strict_parallel_phi1():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
     transition_dict = strict_parallel_transitions()
 
@@ -286,6 +423,7 @@ def Strict_parallel_phi1():
     )
 
 def Strict_parallel_phi2():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
     transition_dict = strict_parallel_transitions()
 
@@ -301,6 +439,7 @@ def Strict_parallel_phi2():
 
 
 def Strict_parallel_phi3():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
     transition_dict = strict_parallel_transitions()
 
@@ -315,6 +454,7 @@ def Strict_parallel_phi3():
     )
 
 def Strict_parallel_phi4():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
     transition_dict = strict_parallel_transitions()
 
@@ -328,13 +468,79 @@ def Strict_parallel_phi4():
         ['forward']
     )
 
+def Strict_parallel_phi5():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = strict_parallel_transitions()
+
+    return PropertyDFA(
+        "phi5",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'right','left'},
+        lambda q, a: transition_dict[(q, a)],
+        ['right', 'left']
+    )
+
+
+def Strict_parallel_phi6():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = strict_parallel_transitions()
+
+    return PropertyDFA(
+        "phi6",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'right','back'},
+        lambda q, a: transition_dict[(q, a)],
+        ['right', 'back']
+    )
+
+
+def Strict_parallel_phi7():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = strict_parallel_transitions()
+
+    return PropertyDFA(
+        "phi7",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'right','forward'},
+        lambda q, a: transition_dict[(q, a)],
+        ['right','forward']
+    )
+
+
+def Strict_parallel_phi8():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = strict_parallel_transitions()
+
+    return PropertyDFA(
+        "phi8",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in {'left','back'},
+        lambda q, a: transition_dict[(q, a)],
+        ['left','back']
+    )
 
 def get_all_Strict_parallel_dfas():
     return [
         Strict_parallel_phi1(),
         Strict_parallel_phi2(),
         Strict_parallel_phi3(),
-        Strict_parallel_phi4()
+        Strict_parallel_phi4(),
+        Strict_parallel_phi5(),
+        Strict_parallel_phi6(),
+        Strict_parallel_phi7(),
+        Strict_parallel_phi8(),
     ]
 
 
@@ -387,7 +593,7 @@ def LE_mono_phi1():
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
-        "Property1",
+        "phi1",
         ['r', 'l', 'f', 'b', 's'],
         states,
         'start',
@@ -403,7 +609,7 @@ def LE_mono_phi2():
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
-        "Property2",
+        "phi2",
         ['r', 'l', 'f', 'b', 's'],
         states,
         'start',
@@ -418,7 +624,7 @@ def LE_mono_phi3():
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
-        "Property3",
+        "phi3",
         ['r', 'l', 'f', 'b', 's'],
         states,
         'start',
@@ -433,7 +639,7 @@ def LE_mono_phi4():
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
-        "Property4",
+        "phi4",
         ['r', 'l', 'f', 'b', 's'],
         states,
         'start',
@@ -524,11 +730,12 @@ def LE_parallel_transitions():
     }
 
 def LE_parallel_phi1():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_parallel_transitions()
 
     return PropertyDFA(
-        "Property1",
+        "phi1",
         ['r','l','f','b','s','u','d'],
         states,
         'start',
@@ -538,11 +745,12 @@ def LE_parallel_phi1():
     )
 
 def LE_parallel_phi2():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_parallel_transitions()
 
     return PropertyDFA(
-        "Property2",
+        "phi2",
         ['r','l','f','b','s','u','d'],
         states,
         'start',
@@ -552,11 +760,12 @@ def LE_parallel_phi2():
     )
 
 def LE_parallel_phi3():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_parallel_transitions()
 
     return PropertyDFA(
-        "Property3",
+        "phi3",
         ['r','l','f','b','s','u','d'],
         states,
         'start',
@@ -566,11 +775,12 @@ def LE_parallel_phi3():
     )
 
 def LE_parallel_phi4():
+
     states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_parallel_transitions()
 
     return PropertyDFA(
-        "Property4",
+        "phi4",
         ['r','l','f','b','s','u','d'],
         states,
         'start',
@@ -764,9 +974,7 @@ def exclusive_phi8():
 
 
 def get_all_dfas():
-    """
-    Add/remove DFAs ONLY here.
-    """
+
     return [
         exclusive_phi1(),
         exclusive_phi2(),

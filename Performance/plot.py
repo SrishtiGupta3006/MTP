@@ -68,28 +68,44 @@ def style_for(enforcer_name):
 # Plotting
 
 for title, enforcer_list in groups.items():
+
+    # ==============================
+    # STRICT ENFORCERS → TWO PLOTS
+    # ==============================
+    if title == "Strict Enforcers":
+
+        # -------- Zoomed view --------
+        plt.figure()
+        for enf in enforcer_list:
+            x = [p[0] for p in data[enf]]
+            y = [p[1] for p in data[enf]]
+            plt.plot(x, y, label=enf, **style_for(enf))
+
+        plt.xlabel("Input Size (Number of Events)")
+        plt.ylabel("Total Time (seconds)")
+        plt.title("Strict Enforcers (Zoomed View)")
+        plt.ylim(0, 0.5)
+        plt.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5])
+        plt.grid(True, linestyle="--", alpha=0.6)
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig("strict_enforcers_zoomed.png")
+        plt.show()
+
+    # ==============================
+    # DEFAULT PLOTTING
+    # ==============================
     plt.figure()
-
     for enf in enforcer_list:
-        if enf not in data:
-            continue
-
         x = [p[0] for p in data[enf]]
         y = [p[1] for p in data[enf]]
-
-        plt.plot(
-            x,
-            y,
-            label=enf,
-            **style_for(enf)
-        )
+        plt.plot(x, y, label=enf, **style_for(enf))
 
     plt.xlabel("Input Size (Number of Events)")
     plt.ylabel("Total Time (seconds)")
     plt.title(title)
     plt.grid(True, linestyle="--", alpha=0.6)
-
-    plt.legend(loc="best", frameon=True)
+    plt.legend()
     plt.tight_layout()
 
     filename = title.lower().replace(" ", "_") + ".png"
