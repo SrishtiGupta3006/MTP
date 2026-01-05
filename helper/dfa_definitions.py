@@ -111,7 +111,7 @@ def Strict_serial_phi4():
 
 def Strict_serial_phi5():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_serial_transitions()
 
     return PropertyDFA(
@@ -124,10 +124,9 @@ def Strict_serial_phi5():
         ['back', 'left']
     )
 
-
 def Strict_serial_phi6():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_serial_transitions()
 
     return PropertyDFA(
@@ -140,10 +139,9 @@ def Strict_serial_phi6():
         ['forward','left']
     )
 
-
 def Strict_serial_phi7():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_serial_transitions()
 
     return PropertyDFA(
@@ -156,10 +154,9 @@ def Strict_serial_phi7():
         ['right','left']
     )
 
-
 def Strict_serial_phi8():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_serial_transitions()
 
     return PropertyDFA(
@@ -174,6 +171,7 @@ def Strict_serial_phi8():
 
 
 def get_all_Strict_serial_dfas():
+    
     return [
         Strict_serial_phi1(),
         Strict_serial_phi2(),
@@ -190,6 +188,7 @@ def get_all_Strict_serial_dfas():
 # ======================================================
 
 def strict_mono_transitions():
+
     return {
         ('start','r'):'right',
         ('start','l'):'left',
@@ -230,7 +229,7 @@ def strict_mono_transitions():
 
 def Strict_mono_phi1():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -246,7 +245,7 @@ def Strict_mono_phi1():
 
 def Strict_mono_phi2():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -262,7 +261,7 @@ def Strict_mono_phi2():
 
 def Strict_mono_phi3():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -277,7 +276,7 @@ def Strict_mono_phi3():
 
 def Strict_mono_phi4():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -292,7 +291,7 @@ def Strict_mono_phi4():
 
 def Strict_mono_phi5():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -307,7 +306,7 @@ def Strict_mono_phi5():
 
 def Strict_mono_phi6():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -322,7 +321,7 @@ def Strict_mono_phi6():
 
 def Strict_mono_phi7():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -337,7 +336,7 @@ def Strict_mono_phi7():
 
 def Strict_mono_phi8():
 
-    states = ['start','right','left','forward','back','stop']
+    states = ['start', 'right', 'left', 'forward', 'back', 'stop']
     transition_dict = strict_mono_transitions()
 
     return PropertyDFA(
@@ -351,6 +350,7 @@ def Strict_mono_phi8():
     )
 
 def get_all_Strict_mono_dfas():
+
     return [
         Strict_mono_phi1(),
         Strict_mono_phi2(),
@@ -368,6 +368,7 @@ def get_all_Strict_mono_dfas():
 # ======================================================
 
 def strict_parallel_transitions():
+
     return{
         ('start','r'):'right',
         ('start','l'):'left',
@@ -437,7 +438,6 @@ def Strict_parallel_phi2():
         ['left']
     )
 
-
 def Strict_parallel_phi3():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -483,7 +483,6 @@ def Strict_parallel_phi5():
         ['right', 'left']
     )
 
-
 def Strict_parallel_phi6():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -499,7 +498,6 @@ def Strict_parallel_phi6():
         ['right', 'back']
     )
 
-
 def Strict_parallel_phi7():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -514,7 +512,6 @@ def Strict_parallel_phi7():
         lambda q, a: transition_dict[(q, a)],
         ['right','forward']
     )
-
 
 def Strict_parallel_phi8():
 
@@ -532,6 +529,7 @@ def Strict_parallel_phi8():
     )
 
 def get_all_Strict_parallel_dfas():
+
     return [
         Strict_parallel_phi1(),
         Strict_parallel_phi2(),
@@ -549,6 +547,7 @@ def get_all_Strict_parallel_dfas():
 # ======================================================
 
 def LE_mono_transitions():
+    
     return{
         ('start', 'r'): 'right',
         ('start', 'l'): 'left',
@@ -602,7 +601,6 @@ def LE_mono_phi1():
         ['right']
     )
 
-
 def LE_mono_phi2():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -650,6 +648,7 @@ def LE_mono_phi4():
 
 
 def get_all_LE_mono_dfas():
+
     return [
         LE_mono_phi1(),
         LE_mono_phi2(),
@@ -663,6 +662,7 @@ def get_all_LE_mono_dfas():
 # ======================================================
 
 def LE_parallel_transitions():
+
     return {
         ('start','r'):'right',
         ('start','l'):'left',
@@ -790,6 +790,7 @@ def LE_parallel_phi4():
     )
 
 def get_all_LE_parallel_dfas():
+
     return [
         LE_parallel_phi1(),
         LE_parallel_phi2(),
@@ -804,6 +805,7 @@ def get_all_LE_parallel_dfas():
 
 # A1 : decides on 'l'
 def exclusive_phi1():
+
     def d1(q, a):
         transitions = {
             "q0": {"f": "q1", "l": "q0", "o": "q0", "n": "q0", "r": "q0"},
@@ -826,6 +828,7 @@ def exclusive_phi1():
 
 # A2 : decides on 'n'
 def exclusive_phi2():
+
     def d2(q, a):
         transitions = {
             "p0": {"o": "p1", "f": "p0", "l": "p0", "n": "p0", "r": "p0"},
@@ -847,6 +850,7 @@ def exclusive_phi2():
 
 # A3 : decides on 'r'
 def exclusive_phi3():
+
     def d3(q, a):
         transitions = {
             "s0": {"r": "s1", "f": "s0", "l": "s0", "o": "s0", "n": "s0"},
@@ -868,6 +872,7 @@ def exclusive_phi3():
 
 # A4 : decides on 'o'
 def exclusive_phi4():
+
     def d4(q, a):
         transitions = {
             "t0": {"o": "t1", "f": "t0", "l": "t0", "n": "t0", "r": "t0"},
@@ -889,6 +894,7 @@ def exclusive_phi4():
 
 # A5 : decides on 'f'
 def exclusive_phi5():
+
     def d5(q, a):
         transitions = {
             "u0": {"f": "u1", "l": "u0", "o": "u0", "n": "u0", "r": "u0"},
@@ -910,6 +916,7 @@ def exclusive_phi5():
 
 # A6 : decides on 'r'
 def exclusive_phi6():
+
     def d6(q, a):
         transitions = {
             "v0": {"r": "v1", "f": "v0", "l": "v0", "o": "v0", "n": "v0"},
@@ -931,6 +938,7 @@ def exclusive_phi6():
 
 # A7 : decides on 'o'
 def exclusive_phi7():
+
     def d7(q, a):
         transitions = {
             "w0": {"o": "w1", "f": "w0", "l": "w0", "n": "w0", "r": "w0"},
@@ -952,6 +960,7 @@ def exclusive_phi7():
 
 # A8 : decides on 'n'
 def exclusive_phi8():
+
     def d8(q, a):
         transitions = {
             "x0": {"n": "x1", "f": "x0", "l": "x0", "o": "x0", "r": "x0"},
@@ -971,6 +980,48 @@ def exclusive_phi8():
 
     return A8, {"n"}
 
+# A9 : decides on 'l'
+def exclusive_phi9():
+
+    def d9(q, a):
+        transitions = {
+            "y0": {"l": "y1", "f": "y0", "o": "y0", "n": "y0", "r": "y0"},
+            "y1": {"l": "y2", "f": "y1", "o": "y1", "n": "y1", "r": "y1"},
+            "y2": {"l": "y2", "f": "y2", "o": "y2", "n": "y2", "r": "y2"},
+        }
+        return transitions[q].get(a, q)
+
+    A9 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["y0", "y1", "y2"],
+        q0="y0",
+        F=lambda q: q == "y2",
+        d=d9
+    )
+    A9.name = "A9"
+    return A9, {"l"}
+
+
+# A10 : decides on 'n'
+def exclusive_phi10():
+
+    def d10(q, a):
+        transitions = {
+            "z0": {"n": "z1", "f": "z0", "l": "z0", "o": "z0", "r": "z0"},
+            "z1": {"n": "z2", "f": "z1", "l": "z1", "o": "z1", "r": "z1"},
+            "z2": {"n": "z2", "f": "z2", "l": "z2", "o": "z2", "r": "z2"},
+        }
+        return transitions[q].get(a, q)
+
+    A10 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["z0", "z1", "z2"],
+        q0="z0",
+        F=lambda q: q == "z2",
+        d=d10
+    )
+    A10.name = "A10"
+    return A10, {"n"}
 
 
 def get_all_dfas():
@@ -983,6 +1034,8 @@ def get_all_dfas():
         exclusive_phi5(),
         exclusive_phi6(),
         exclusive_phi7(),
-        exclusive_phi8()
+        exclusive_phi8(),
+        exclusive_phi9(),
+        exclusive_phi10(),
     ]
 

@@ -42,12 +42,12 @@ from helper.product import product
 
 # Load DFAs
 
-strict_mono_dfas     = get_all_Strict_mono_dfas()
-strict_serial_dfas   = get_all_Strict_serial_dfas()
-strict_parallel_dfas = get_all_Strict_parallel_dfas()
+strict_mono_dfas        = get_all_Strict_mono_dfas()
+strict_serial_dfas      = get_all_Strict_serial_dfas()
+strict_parallel_dfas    = get_all_Strict_parallel_dfas()
 
-le_mono_dfas     = get_all_LE_mono_dfas()
-le_parallel_dfas = get_all_LE_parallel_dfas()
+le_mono_dfas            = get_all_LE_mono_dfas()
+le_parallel_dfas        = get_all_LE_parallel_dfas()
 
 exclusive_modified_dfas = get_all_exclusive_modified()
 
@@ -67,7 +67,7 @@ enforcers = {
         "type": "LE_parallel",
     },
     "Strict_Monolithic": {
-        "factory": lambda: None,   # handled inside timer
+        "factory": lambda: None,   
         "alphabet": list(strict_mono_dfas[0].S),
         "type": "strict_monolithic",
     },
@@ -100,28 +100,12 @@ INPUT_SIZES = [100, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
 def generate_input(alphabet, n):
     return [random.choice(alphabet) for _ in range(n)]
 
+mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
+
 
 def time_enforcer(enf, enf_type, input_list):
 
-    if enf_type == "LE_monolithic":
-        t0 = time.time()
-        for a in input_list:
-            enf(a)
-        return time.time() - t0
-
-    elif enf_type == "LE_parallel":
-        t0 = time.time()
-        for a in input_list:
-            enf.process_event(a)
-        return time.time() - t0
-
-    elif enf_type == "strict_parallel":
-        t0 = time.time()
-        for a in input_list:
-            enf.step(a)
-        return time.time() - t0
-
-    elif enf_type == "strict_serial":
+    if enf_type == "strict_serial":
         t0 = time.time()
         for a in input_list:
             enf.step(a)
@@ -134,19 +118,33 @@ def time_enforcer(enf, enf_type, input_list):
         for a in input_list:
             enf.step(a)
         return time.time() - t0
+    
+    elif enf_type == "strict_parallel":
+        t0 = time.time()
+        for a in input_list:
+            enf.step(a)
+        return time.time() - t0
+
+    elif enf_type == "LE_monolithic":
+        t0 = time.time()
+        for a in input_list:
+            enf(a)
+        return time.time() - t0
+
+    elif enf_type == "LE_parallel":
+        t0 = time.time()
+        for a in input_list:
+            enf.process_event(a)
+        return time.time() - t0
 
     elif enf_type == "exclusive_monolithic":
-        t_prod_start = time.time()
-        mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
-        mono_enf = ExclusiveMonolithicEnforcer(mono_dfa)
-        t_prod = time.time() - t_prod_start
 
-        t_run_start = time.time()
+        mono_enf = ExclusiveMonolithicEnforcer(mono_dfa)
+
+        t0 = time.time()
         for a in input_list:
             mono_enf.step(a)
-        t_run = time.time() - t_run_start
-
-        return t_prod + t_run
+        return time.time() - t0
 
     elif enf_type == "exclusive_parallel":
         t0 = time.time()
@@ -172,7 +170,6 @@ for name, cfg in enforcers.items():
 
 # -------------------------------------------------
 # Save CSV
-# -------------------------------------------------
 
 with open("performance_results.csv", "w", newline="") as f:
     writer = csv.writer(f)
