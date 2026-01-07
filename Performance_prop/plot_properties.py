@@ -27,13 +27,13 @@ plt.rcParams.update({
 
 data = defaultdict(list)
 
-with open("performance_results.csv", "r") as f:
+with open("performance_results_num_properties.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
-        enforcer = row["Enforcer"].strip()   # strip spaces (important)
-        size = int(row["Input Size"])
-        time_val = float(row["Total Time (s)"])
-        data[enforcer].append((size, time_val))
+        enforcer = row["Enforcer"].strip()
+        num_props = int(row["Num_Properties"])
+        time_us = float(row["Total_Time (microseconds)"])  # microseconds
+        data[enforcer].append((num_props, time_us))
 
 for k in data:
     data[k] = sorted(data[k], key=lambda x: x[0])
@@ -81,37 +81,6 @@ def style_for(enforcer_name):
 
 for title, enforcer_list in groups.items():
 
-    # -------- STRICT ZOOMED VIEW --------
-    if title == "Strict Enforcers":
-        plt.figure(constrained_layout=True)
-
-        plotted = False
-        for enf in enforcer_list:
-            if enf not in data or not data[enf]:
-                print(f"WARNING: No data for {enf}")
-                continue
-
-            x = [p[0] for p in data[enf]]
-            y = [p[1] for p in data[enf]]
-            plt.plot(x, y, label=enf, **style_for(enf))
-            plotted = True
-
-        if plotted:
-            plt.xlabel("Input Size (Number of Events)")
-            plt.ylabel("Total Time (seconds)")
-            plt.title("Strict Enforcers")
-
-            # Lift 0 slightly above bottom
-            plt.ylim(-0.02, 0.5)
-            plt.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5])
-
-            plt.grid(True, linestyle="--", alpha=0.6)
-            plt.legend()
-            plt.savefig("strict_enforcers_1.png")
-            plt.show()
-        else:
-            plt.close()
-
     # -------- DEFAULT VIEW --------
     plt.figure(constrained_layout=True)
 
@@ -123,17 +92,18 @@ for title, enforcer_list in groups.items():
 
         x = [p[0] for p in data[enf]]
         y = [p[1] for p in data[enf]]
+
         plt.plot(x, y, label=enf, **style_for(enf))
         plotted = True
 
     if plotted:
-        plt.xlabel("Input Size (Number of Events)")
-        plt.ylabel("Total Time (seconds)")
+        plt.xlabel("Number of Properties")
+        plt.ylabel("Total Time (microseconds)")
         plt.title(title)
         plt.grid(True, linestyle="--", alpha=0.6)
         plt.legend()
 
-        filename = title.lower().replace(" ", "_") + ".png"
+        filename = title.lower().replace(" ", "_") + "_num_properties.png"
         plt.savefig(filename)
         plt.show()
         print(f"Saved {filename}")

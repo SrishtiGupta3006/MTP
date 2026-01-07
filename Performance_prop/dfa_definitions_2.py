@@ -646,6 +646,21 @@ def LE_mono_phi4():
         ['forward']
     )
 
+def LE_mono_phi5():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = LE_mono_transitions()
+
+    return PropertyDFA(
+        "phi5",
+        ['r', 'l', 'f', 'b', 's'],
+        states,
+        'start',
+        lambda q: q in ['forward'],
+        lambda q, a: transition_dict[(q, a)],
+        ['forward']
+    )
+
 
 def get_all_LE_mono_dfas():
 
@@ -653,7 +668,8 @@ def get_all_LE_mono_dfas():
         LE_mono_phi1(),
         LE_mono_phi2(),
         LE_mono_phi3(),
-        LE_mono_phi4()
+        LE_mono_phi4(),
+        LE_mono_phi5(),
     ]
 
 
@@ -789,13 +805,29 @@ def LE_parallel_phi4():
         ['left', 'up']
     )
 
+def LE_parallel_phi5():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
+    transition_dict = LE_parallel_transitions()
+
+    return PropertyDFA(
+        "phi5",
+        ['r','l','f','b','s','u','d'],
+        states,
+        'start',
+        lambda q: q in ['left', 'up'],
+        lambda q, a: transition_dict[(q, a)],
+        ['left', 'up']
+    )
+
 def get_all_LE_parallel_dfas():
 
     return [
         LE_parallel_phi1(),
         LE_parallel_phi2(),
         LE_parallel_phi3(),
-        LE_parallel_phi4()
+        LE_parallel_phi4(),
+        LE_parallel_phi5()
     ]
 
 
