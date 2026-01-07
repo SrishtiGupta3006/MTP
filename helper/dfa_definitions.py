@@ -982,6 +982,49 @@ def exclusive_phi8():
 
 # A9 : decides on 'l'
 def exclusive_phi9():
+<<<<<<< HEAD
+=======
+
+    def d9(q, a):
+        transitions = {
+            "y0": {"l": "y1", "f": "y0", "o": "y0", "n": "y0", "r": "y0"},
+            "y1": {"l": "y2", "f": "y1", "o": "y1", "n": "y1", "r": "y1"},
+            "y2": {"l": "y2", "f": "y2", "o": "y2", "n": "y2", "r": "y2"},
+        }
+        return transitions[q].get(a, q)
+
+    A9 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["y0", "y1", "y2"],
+        q0="y0",
+        F=lambda q: q == "y2",
+        d=d9
+    )
+    A9.name = "A9"
+    return A9, {"l"}
+
+
+# A10 : decides on 'n'
+def exclusive_phi10():
+
+    def d10(q, a):
+        transitions = {
+            "z0": {"n": "z1", "f": "z0", "l": "z0", "o": "z0", "r": "z0"},
+            "z1": {"n": "z2", "f": "z1", "l": "z1", "o": "z1", "r": "z1"},
+            "z2": {"n": "z2", "f": "z2", "l": "z2", "o": "z2", "r": "z2"},
+        }
+        return transitions[q].get(a, q)
+
+    A10 = ExclusiveDFA(
+        S={"f", "l", "o", "n", "r"},
+        Q=["z0", "z1", "z2"],
+        q0="z0",
+        F=lambda q: q == "z2",
+        d=d10
+    )
+    A10.name = "A10"
+    return A10, {"n"}
+>>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
 
     def d9(q, a):
         transitions = {
@@ -1057,6 +1100,9 @@ def get_all_dfas():
         exclusive_phi8(),
         exclusive_phi9(),
         exclusive_phi10(),
+<<<<<<< HEAD
         exclusive_phi11()
+=======
+>>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
     ]
 

@@ -67,9 +67,15 @@ enforcers = {
        "type": "LE_parallel",
     },
     "Strict_Monolithic": {
+<<<<<<< HEAD
        "factory": lambda: None,   
        "alphabet": list(strict_mono_dfas[0].S),
        "type": "strict_monolithic",
+=======
+        "factory": lambda: None,   
+        "alphabet": list(strict_mono_dfas[0].S),
+        "type": "strict_monolithic",
+>>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
     },
     "Strict_Serial": {
        "factory": lambda: StrictSerialEnforcer(strict_serial_dfas),
@@ -101,6 +107,10 @@ def generate_input(alphabet, n):
     return [random.choice(alphabet) for _ in range(n)]
 
 mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
+<<<<<<< HEAD
+=======
+
+>>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
 
 def time_enforcer(enf, enf_type, input_list):
 
