@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 Performance Evaluation w.r.t Number of Properties
-(Fixed input size, increasing number of DFAs)
 """
 
 import time
@@ -15,7 +14,7 @@ sys.path.append(PROJECT_ROOT)
 
 # Imports
 
-from Performance_prop.dfa_definitions_2 import (
+from Performance_prop.dfa_definitions_prop import (
     get_all_Strict_mono_dfas,
     get_all_Strict_serial_dfas,
     get_all_Strict_parallel_dfas,
@@ -37,7 +36,7 @@ from Source.exclusive_mono import ExclusiveMonolithicEnforcer
 from Source.exclusive_parallel import ExclusiveParallelEnforcer
 
 # -------------------------------------------------
-# Load ALL DFAs once
+# Load ALL DFAs
 # -------------------------------------------------
 
 STRICT_MONO_ALL     = get_all_Strict_mono_dfas()
@@ -54,7 +53,16 @@ EXCLUSIVE_ALL       = get_all_exclusive_modified()
 # -------------------------------------------------
 
 INPUT_SIZE = 100
-NUM_PROPERTIES = [2, 3, 4, 5]
+
+MAX_PROPS = {
+    "Strict_Monolithic": 10,
+    "Strict_Serial": 14,
+    "Strict_Parallel": 14,
+    "LE_Monolithic": 6,
+    "LE_Parallel": 6,
+    "Exclusive_Monolithic": 10,
+    "Exclusive_Parallel": 14,
+}
 
 # -------------------------------------------------
 # Helpers
@@ -63,14 +71,17 @@ NUM_PROPERTIES = [2, 3, 4, 5]
 def generate_input(alphabet, n):
     return [random.choice(alphabet) for _ in range(n)]
 
+
 def time_enforcer(enf, enf_type, input_list):
     t0 = time.perf_counter()
 
-    if enf_type in {"strict_serial", "strict_parallel", "exclusive_parallel"}:
-        for a in input_list:
-            enf.step(a)
-
-    elif enf_type == "strict_monolithic":
+    if enf_type in {
+        "strict_monolithic",
+        "strict_serial",
+        "strict_parallel",
+        "exclusive_monolithic",
+        "exclusive_parallel",
+    }:
         for a in input_list:
             enf.step(a)
 
@@ -82,11 +93,7 @@ def time_enforcer(enf, enf_type, input_list):
         for a in input_list:
             enf.process_event(a)
 
-    elif enf_type == "exclusive_monolithic":
-        for a in input_list:
-            enf.step(a)
-
-    return (time.perf_counter() - t0) * 1_000_000  # µs
+    return (time.perf_counter() - t0) * 1_000_000  # microseconds
 
 # -------------------------------------------------
 # Run evaluation
@@ -105,9 +112,11 @@ ENFORCER_ORDER = [
 ]
 
 for name in ENFORCER_ORDER:
-    print(f"\n===== {name} =====")
+    print(f"\n----- {name} -----")
 
-    for k in NUM_PROPERTIES:
+    property_range = range(2, MAX_PROPS[name] + 1)
+
+    for k in property_range:
 
         # Slice DFAs
         strict_mono_dfas     = STRICT_MONO_ALL[:k]
@@ -118,45 +127,50 @@ for name in ENFORCER_ORDER:
         le_parallel_dfas     = LE_PARALLEL_ALL[:k]
 
         exclusive_dfas       = EXCLUSIVE_ALL[:k]
-        exclusive_mono_dfa   = product(*exclusive_dfas, "Exclusive_Mono")
 
         # Build enforcer
-        if name == "Strict_Monolithic":
-            enf = StrictMonolithicEnforcer(strict_mono_dfas)
-            alphabet = list(strict_mono_dfas[0].S)
-            enf_type = "strict_monolithic"
+        try:
+            if name == "Strict_Monolithic":
+                enf = StrictMonolithicEnforcer(strict_mono_dfas)
+                alphabet = list(strict_mono_dfas[0].S)
+                enf_type = "strict_monolithic"
 
-        elif name == "Strict_Serial":
-            enf = StrictSerialEnforcer(strict_serial_dfas)
-            alphabet = list(strict_serial_dfas[0].S)
-            enf_type = "strict_serial"
+            elif name == "Strict_Serial":
+                enf = StrictSerialEnforcer(strict_serial_dfas)
+                alphabet = list(strict_serial_dfas[0].S)
+                enf_type = "strict_serial"
 
-        elif name == "Strict_Parallel":
-            enf = StrictParallelEnforcer(strict_parallel_dfas)
-            alphabet = list(strict_parallel_dfas[0].S)
-            enf_type = "strict_parallel"
+            elif name == "Strict_Parallel":
+                enf = StrictParallelEnforcer(strict_parallel_dfas)
+                alphabet = list(strict_parallel_dfas[0].S)
+                enf_type = "strict_parallel"
 
-        elif name == "LE_Monolithic":
-            enf = least_effort_monolithic_enforcer("LE", *le_mono_dfas)
-            alphabet = list(le_mono_dfas[0].S)
-            enf_type = "LE_monolithic"
+            elif name == "LE_Monolithic":
+                enf = least_effort_monolithic_enforcer("LE", *le_mono_dfas)
+                alphabet = list(le_mono_dfas[0].S)
+                enf_type = "LE_monolithic"
 
-        elif name == "LE_Parallel":
-            enf = LeastEffortParallelEnforcer(le_parallel_dfas)
-            alphabet = list(le_parallel_dfas[0].S)
-            enf_type = "LE_parallel"
+            elif name == "LE_Parallel":
+                enf = LeastEffortParallelEnforcer(le_parallel_dfas)
+                alphabet = list(le_parallel_dfas[0].S)
+                enf_type = "LE_parallel"
 
-        elif name == "Exclusive_Monolithic":
-            enf = ExclusiveMonolithicEnforcer(exclusive_mono_dfa)
-            alphabet = list(exclusive_dfas[0].S)
-            enf_type = "exclusive_monolithic"
+            elif name == "Exclusive_Monolithic":
+                exclusive_mono_dfa = product(*exclusive_dfas, "Exclusive_Mono")
+                enf = ExclusiveMonolithicEnforcer(exclusive_mono_dfa)
+                alphabet = list(exclusive_dfas[0].S)
+                enf_type = "exclusive_monolithic"
 
-        elif name == "Exclusive_Parallel":
-            enf = ExclusiveParallelEnforcer(exclusive_dfas)
-            alphabet = list(exclusive_dfas[0].S)
-            enf_type = "exclusive_parallel"
+            elif name == "Exclusive_Parallel":
+                enf = ExclusiveParallelEnforcer(exclusive_dfas)
+                alphabet = list(exclusive_dfas[0].S)
+                enf_type = "exclusive_parallel"
 
-        # Run
+        except MemoryError:
+            print(f"{name} | {k} properties | MEMORY ERROR (state explosion)")
+            continue
+
+        # Run experiment
         seq = generate_input(alphabet, INPUT_SIZE)
         total = time_enforcer(enf, enf_type, seq)
 
@@ -165,7 +179,7 @@ for name in ENFORCER_ORDER:
 
 # Save CSV
 
-with open("performance_results_properties.csv", "w", newline="") as f:
+with open("performance_properties.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow([
         "Enforcer",
@@ -175,4 +189,4 @@ with open("performance_results_properties.csv", "w", newline="") as f:
     ])
     writer.writerows(results)
 
-print("\nSaved performance_results_properties.csv")
+print("\nSaved performance_properties.csv")

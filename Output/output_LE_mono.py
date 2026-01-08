@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 output_LE_mono.py
-
 """
 
 import sys

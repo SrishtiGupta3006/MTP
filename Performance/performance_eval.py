@@ -67,15 +67,9 @@ enforcers = {
        "type": "LE_parallel",
     },
     "Strict_Monolithic": {
-<<<<<<< HEAD
        "factory": lambda: None,   
        "alphabet": list(strict_mono_dfas[0].S),
        "type": "strict_monolithic",
-=======
-        "factory": lambda: None,   
-        "alphabet": list(strict_mono_dfas[0].S),
-        "type": "strict_monolithic",
->>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
     },
     "Strict_Serial": {
        "factory": lambda: StrictSerialEnforcer(strict_serial_dfas),
@@ -88,7 +82,7 @@ enforcers = {
        "type": "strict_parallel",
     },
     "Exclusive_Monolithic": {
-       "factory": lambda: None,   # handled inside timer
+       "factory": lambda: None,
        "alphabet": list(exclusive_modified_dfas[0].S),
        "type": "exclusive_monolithic",
     },
@@ -107,10 +101,6 @@ def generate_input(alphabet, n):
     return [random.choice(alphabet) for _ in range(n)]
 
 mono_dfa = product(*exclusive_modified_dfas, "Exclusive_Mono")
-<<<<<<< HEAD
-=======
-
->>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
 
 def time_enforcer(enf, enf_type, input_list):
 
@@ -177,13 +167,11 @@ for name, cfg in enforcers.items():
         print(f"{name} | {n} events | {total:.6f} sec")
         results.append([name, n, total])
 
-
-# -------------------------------------------------
 # Save CSV
 
-with open("performance_results.csv", "w", newline="") as f:
+with open("performance_results_1.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(["Enforcer", "Input Size", "Total Time (s)"])
     writer.writerows(results)
 
-print("\nSaved performance_results.csv")
+print("\nSaved performance_results_1.csv")

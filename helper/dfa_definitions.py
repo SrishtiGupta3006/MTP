@@ -548,52 +548,80 @@ def get_all_Strict_parallel_dfas():
 
 def LE_mono_transitions():
     
-    return{
-        ('start', 'r'): 'right',
-        ('start', 'l'): 'left',
-        ('start', 'f'): 'forward',
-        ('start', 'b'): 'back',
-        ('start', 's'): 'stop',
+    return {
+        ('start','r'):'right',
+        ('start','l'):'left',
+        ('start','f'):'forward',
+        ('start','b'):'back',
+        ('start','u'):'up',
+        ('start','d'):'down',
+        ('start','s'):'stop',
 
-        ('right', 'r'): 'right',
-        ('right', 'l'): 'left',
-        ('right', 'f'): 'forward',
-        ('right', 'b'): 'back',
-        ('right', 's'): 'stop',
+        ('right','r'):'right',
+        ('right','l'):'left',
+        ('right','f'):'forward',
+        ('right','b'):'back',
+        ('right','u'):'up',
+        ('right','d'):'down',
+        ('right','s'):'stop',
 
-        ('left', 'r'): 'right',
-        ('left', 'l'): 'left',
-        ('left', 'f'): 'forward',
-        ('left', 'b'): 'back',
-        ('left', 's'): 'stop',
+        ('left','r'):'right',
+        ('left','l'):'left',
+        ('left','f'):'forward',
+        ('left','b'):'back',
+        ('left','u'):'up',
+        ('left','d'):'down',
+        ('left','s'):'stop',
 
-        ('forward', 'r'): 'right',
-        ('forward', 'l'): 'left',
-        ('forward', 'f'): 'forward',
-        ('forward', 'b'): 'back',
-        ('forward', 's'): 'stop',
+        ('forward','r'):'right',
+        ('forward','l'):'left',
+        ('forward','f'):'forward',
+        ('forward','b'):'back',
+        ('forward','u'):'up',
+        ('forward','d'):'down',
+        ('forward','s'):'stop',
 
-        ('back', 'r'): 'right',
-        ('back', 'l'): 'left',
-        ('back', 'f'): 'forward',
-        ('back', 'b'): 'back',
-        ('back', 's'): 'stop',
+        ('back','r'):'right',
+        ('back','l'):'left',
+        ('back','f'):'forward',
+        ('back','b'):'back',
+        ('back','u'):'up',
+        ('back','d'):'down',
+        ('back','s'):'stop',
 
-        ('stop', 'r'): 'stop',
-        ('stop', 'l'): 'stop',
-        ('stop', 'f'): 'stop',
-        ('stop', 'b'): 'stop',
-        ('stop', 's'): 'stop',
+        ('up','r'):'right',
+        ('up','l'):'left',
+        ('up','f'):'forward',
+        ('up','b'):'back',
+        ('up','u'):'up',
+        ('up','d'):'down',
+        ('up','s'):'stop',
+
+        ('down','r'):'right',
+        ('down','l'):'left',
+        ('down','f'):'forward',
+        ('down','b'):'back',
+        ('down','u'):'up',
+        ('down','d'):'down',
+        ('down','s'):'stop',
+
+        ('stop','r'):'stop',
+        ('stop','l'):'stop',
+        ('stop','f'):'stop',
+        ('stop','b'):'stop',
+        ('stop','u'):'up',
+        ('stop','d'):'down',
+        ('stop','s'):'stop',
     }
 
 def LE_mono_phi1():
 
-    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
         "phi1",
-        ['r', 'l', 'f', 'b', 's'],
+        ['r', 'l', 'f', 'b', 's', 'u', 'd'],
         states,
         'start',
         lambda q: q in ['right'],
@@ -603,12 +631,12 @@ def LE_mono_phi1():
 
 def LE_mono_phi2():
 
-    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
         "phi2",
-        ['r', 'l', 'f', 'b', 's'],
+        ['r', 'l', 'f', 'b', 's', 'u', 'd'],
         states,
         'start',
         lambda q: q in ['left'],
@@ -618,12 +646,12 @@ def LE_mono_phi2():
 
 def LE_mono_phi3():
 
-    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
         "phi3",
-        ['r', 'l', 'f', 'b', 's'],
+        ['r', 'l', 'f', 'b', 's', 'u', 'd'],
         states,
         'start',
         lambda q: q in ['back'],
@@ -633,12 +661,12 @@ def LE_mono_phi3():
 
 def LE_mono_phi4():
 
-    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back', 'up', 'down']
     transition_dict = LE_mono_transitions()
 
     return PropertyDFA(
         "phi4",
-        ['r', 'l', 'f', 'b', 's'],
+        ['r', 'l', 'f', 'b', 's', 'u', 'd'],
         states,
         'start',
         lambda q: q in ['forward'],
@@ -982,9 +1010,6 @@ def exclusive_phi8():
 
 # A9 : decides on 'l'
 def exclusive_phi9():
-<<<<<<< HEAD
-=======
-
     def d9(q, a):
         transitions = {
             "y0": {"l": "y1", "f": "y0", "o": "y0", "n": "y0", "r": "y0"},
@@ -1024,7 +1049,6 @@ def exclusive_phi10():
     )
     A10.name = "A10"
     return A10, {"n"}
->>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
 
     def d9(q, a):
         transitions = {
@@ -1100,9 +1124,6 @@ def get_all_dfas():
         exclusive_phi8(),
         exclusive_phi9(),
         exclusive_phi10(),
-<<<<<<< HEAD
         exclusive_phi11()
-=======
->>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
     ]
 

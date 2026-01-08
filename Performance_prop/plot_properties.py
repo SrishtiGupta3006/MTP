@@ -27,14 +27,15 @@ plt.rcParams.update({
 
 data = defaultdict(list)
 
-with open("performance_results_num_properties.csv", "r") as f:
+with open("performance_properties.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         enforcer = row["Enforcer"].strip()
         num_props = int(row["Num_Properties"])
-        time_us = float(row["Total_Time (microseconds)"])  # microseconds
+        time_us = float(row["Total_Time (microseconds)"])
         data[enforcer].append((num_props, time_us))
 
+# Sort by number of properties
 for k in data:
     data[k] = sorted(data[k], key=lambda x: x[0])
 
@@ -81,17 +82,24 @@ def style_for(enforcer_name):
 
 for title, enforcer_list in groups.items():
 
-    # -------- DEFAULT VIEW --------
     plt.figure(constrained_layout=True)
-
     plotted = False
+
     for enf in enforcer_list:
         if enf not in data or not data[enf]:
             print(f"WARNING: No data for {enf}")
             continue
 
-        x = [p[0] for p in data[enf]]
-        y = [p[1] for p in data[enf]]
+        if title == "Strict Enforcers":
+            filtered = [(p, t) for p, t in data[enf] if p >= 3]
+        else:
+            filtered = data[enf]
+
+        if not filtered:
+            continue
+
+        x = [p for p, _ in filtered]
+        y = [t for _, t in filtered]
 
         plt.plot(x, y, label=enf, **style_for(enf))
         plotted = True
@@ -103,7 +111,7 @@ for title, enforcer_list in groups.items():
         plt.grid(True, linestyle="--", alpha=0.6)
         plt.legend()
 
-        filename = title.lower().replace(" ", "_") + "_num_properties.png"
+        filename = title.lower().replace(" ", "_") + "_prop.png"
         plt.savefig(filename)
         plt.show()
         print(f"Saved {filename}")

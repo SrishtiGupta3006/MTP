@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 output_strict_parallel.py
-Runtime simulation for Strict Parallel Enforcer (Algorithm 3)
 """
 
 import sys

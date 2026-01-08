@@ -60,7 +60,5 @@ def least_effort_monolithic_enforcer(name, *D):
 
 # Optional alias:
 def least_effort_mono(name, *D):
-    """
-    Wrapper alias: least_effort_mono ≡ least_effort_monolithic_enforcer
-    """
+
     return least_effort_monolithic_enforcer(name, *D)

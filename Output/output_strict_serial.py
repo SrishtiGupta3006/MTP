@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 output_strict_serial.py
-Runtime simulation for Strict Serial Enforcer (Algorithm 2)
 """
 
 import sys

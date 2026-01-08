@@ -30,7 +30,7 @@ data = defaultdict(list)
 with open("performance_results.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
-        enforcer = row["Enforcer"].strip()   # strip spaces (important)
+        enforcer = row["Enforcer"].strip()
         size = int(row["Input Size"])
         time_val = float(row["Total Time (s)"])
         data[enforcer].append((size, time_val))
@@ -96,29 +96,13 @@ for title, enforcer_list in groups.items():
             plt.plot(x, y, label=enf, **style_for(enf))
             plotted = True
 
-<<<<<<< HEAD
         if plotted:
             plt.xlabel("Input Size (Number of Events)")
             plt.ylabel("Total Time (seconds)")
             plt.title("Strict Enforcers")
-=======
-        plt.xlabel("Input Size (Number of Events)")
-        plt.ylabel("Total Time (seconds)")
-        plt.title("Strict Enforcers")
 
-        plt.ylim(-0.1, 0.5)
-        plt.yticks([0.0, 0.1, 0.2, 0.3, 0.4, 0.5])
-
-        plt.grid(True, linestyle="--", alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig("strict_enforcers_1.png")
-        plt.show()
->>>>>>> c0cfcaea4b1038b00e45febe4e27721422a2b23e
-
-            # Lift 0 slightly above bottom
-            plt.ylim(-0.02, 0.5)
-            plt.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5])
+            plt.ylim(-0.1, 0.5)
+            plt.yticks([0.0, 0.1, 0.2, 0.3, 0.4, 0.5])
 
             plt.grid(True, linestyle="--", alpha=0.6)
             plt.legend()
