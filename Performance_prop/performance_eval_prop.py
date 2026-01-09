@@ -12,7 +12,9 @@ import os
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
+# -------------------------------------------------
 # Imports
+# -------------------------------------------------
 
 from Performance_prop.dfa_definitions_prop import (
     get_all_Strict_mono_dfas,
@@ -52,7 +54,8 @@ EXCLUSIVE_ALL       = get_all_exclusive_modified()
 # Experiment parameters
 # -------------------------------------------------
 
-INPUT_SIZE = 100
+INPUT_SIZE = 1000
+NUM_RUNS   = 20   # <<< NEW: number of repetitions
 
 MAX_PROPS = {
     "Strict_Monolithic": 10,
@@ -170,23 +173,41 @@ for name in ENFORCER_ORDER:
             print(f"{name} | {k} properties | MEMORY ERROR (state explosion)")
             continue
 
-        # Run experiment
-        seq = generate_input(alphabet, INPUT_SIZE)
-        total = time_enforcer(enf, enf_type, seq)
+        # -------------------------------------------------
+        # Run experiment NUM_RUNS times and average
+        # -------------------------------------------------
 
-        print(f"{name} | {k} properties | {total:.2f} µs")
-        results.append([name, k, INPUT_SIZE, total])
+        # Warm-up run (reduces cold-start noise)
+        _ = time_enforcer(enf, enf_type, generate_input(alphabet, INPUT_SIZE))
 
-# Save CSV
+        times = []
 
-with open("performance_properties.csv", "w", newline="") as f:
+        for _ in range(NUM_RUNS):
+            seq = generate_input(alphabet, INPUT_SIZE)
+            t = time_enforcer(enf, enf_type, seq)
+            times.append(t)
+
+        avg_time = sum(times) / NUM_RUNS
+
+        print(
+            f"{name} | {k} properties | "
+            f"avg over {NUM_RUNS} runs = {avg_time:.2f} µs"
+        )
+
+        results.append([name, k, INPUT_SIZE, avg_time])
+
+# -------------------------------------------------
+# Save CSV (averaged results)
+# -------------------------------------------------
+
+with open("performance_properties_avg.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow([
         "Enforcer",
         "Num_Properties",
         "Input_Size",
-        "Total_Time (microseconds)"
+        "Avg_Time (microseconds)"
     ])
     writer.writerows(results)
 
-print("\nSaved performance_properties.csv")
+print("\nSaved performance_properties_avg.csv")
