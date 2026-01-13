@@ -2,10 +2,10 @@
 """
 product.py
 Generalised n-ary DFA product construction
-Backward-compatible with binary product.
 """
 
 import sys
+
 sys.path.append("..")
 
 from itertools import product as cartesian_product
@@ -13,7 +13,7 @@ import helper.Automata as Automata
 from helper.Automata import DFA as BaseDFA
 
 
-# ---------------- Helper State Class
+# Helper State Class
 
 class state(object):
     def __init__(self, name):
@@ -21,7 +21,7 @@ class state(object):
         self.transit = dict()
 
 
-# ---------------- DFA 
+# DFA 
 
 class DFA(BaseDFA):
     """
