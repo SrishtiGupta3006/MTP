@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+output_exclusive_mono.py
+"""
 
 import sys
 import os

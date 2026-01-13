@@ -5,6 +5,7 @@ output_strict_parallel.py
 
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 from Source.strict_parallel import StrictParallelEnforcer
@@ -14,7 +15,6 @@ from helper.dfa_definitions import (
 )
 
 # Load property DFAs
-
 phi1 = Strict_parallel_phi1()
 phi2 = Strict_parallel_phi2()
 

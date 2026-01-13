@@ -55,14 +55,14 @@ EXCLUSIVE_ALL       = get_all_exclusive_modified()
 # -------------------------------------------------
 
 INPUT_SIZE = 1000
-NUM_RUNS   = 20   # <<< NEW: number of repetitions
+NUM_RUNS   = 20
 
 MAX_PROPS = {
     "Strict_Monolithic": 10,
     "Strict_Serial": 14,
     "Strict_Parallel": 14,
-    "LE_Monolithic": 6,
-    "LE_Parallel": 6,
+    "LE_Monolithic": 7,
+    "LE_Parallel": 7,
     "Exclusive_Monolithic": 10,
     "Exclusive_Parallel": 14,
 }
@@ -200,7 +200,7 @@ for name in ENFORCER_ORDER:
 # Save CSV (averaged results)
 # -------------------------------------------------
 
-with open("performance_properties_avg.csv", "w", newline="") as f:
+with open("performance_properties_avg_1.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow([
         "Enforcer",
@@ -210,4 +210,4 @@ with open("performance_properties_avg.csv", "w", newline="") as f:
     ])
     writer.writerows(results)
 
-print("\nSaved performance_properties_avg.csv")
+print("\nSaved performance_properties_avg_1.csv")

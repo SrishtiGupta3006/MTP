@@ -1090,27 +1090,6 @@ def exclusive_phi10():
     A10.name = "A10"
     return A10, {"n"}
 
-# A11 : decides on 'r'
-def exclusive_phi11():
-
-    def d11(q, a):
-        transitions = {
-            "a0": {"r": "a1", "f": "a0", "l": "a0", "o": "a0", "n": "a0"},
-            "a1": {"r": "a2", "f": "a1", "l": "a1", "o": "a1", "n": "a1"},
-            "a2": {"r": "a2", "f": "a2", "l": "a2", "o": "a2", "n": "a2"},
-        }
-        return transitions[q].get(a, q)
-
-    A11 = ExclusiveDFA(
-        S={"f", "l", "o", "n", "r"},
-        Q=["a0", "a1", "a2"],
-        q0="a0",
-        F=lambda q: q == "a2",
-        d=d11
-    )
-    A11.name = "A11"
-    return A11, {"r"}
-
 def get_all_dfas():
 
     return [
@@ -1124,6 +1103,5 @@ def get_all_dfas():
         exclusive_phi8(),
         exclusive_phi9(),
         exclusive_phi10(),
-        exclusive_phi11()
     ]
 

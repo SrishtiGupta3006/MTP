@@ -6,9 +6,7 @@ exclusive_mono.py
 class ExclusiveMonolithicEnforcer:
 
     def __init__(self, dfa):
-        """
-        dfa: AND-product of modified DFAs (A′₁ ⊗ A′₂ ⊗ ... ⊗ A′ₙ)
-        """
+
         self.dfa = dfa
         self.q = dfa.q0          # committed state
         self.sigma_c = []        # buffer σ_c
@@ -24,9 +22,8 @@ class ExclusiveMonolithicEnforcer:
         return temp
 
     def step(self, a):
-        
 
-         # Safety check
+        # Safety check
         if a not in self.dfa.S:
             raise ValueError(f"Invalid input symbol: {a}")
         
@@ -60,9 +57,8 @@ class ExclusiveMonolithicEnforcer:
         return []
 
     def enforce(self, input_word):
-        """
-        Enforce a complete input trace.
-        """
+
+        # Enforce a complete input trace.
         out = []
         for a in input_word:
             released = self.step(a)
@@ -71,9 +67,8 @@ class ExclusiveMonolithicEnforcer:
         return out
 
     def reset(self):
-        """
-        Reset enforcer state.
-        """
+        
+        # Reset enforcer state.
         self.q = self.dfa.q0
         self.sigma_c = []
         self.output = []

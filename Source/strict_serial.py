@@ -1,9 +1,10 @@
-# Source/strict_serial.py
+#!/usr/bin/env python3
+"""
+Strict Serial Enforcer
+"""
 
 class StrictSerialEnforcer:
-    """
-    Strict Serial Enforcer
-    """
+
 
     def __init__(self, dfas):
         assert isinstance(dfas, list) and len(dfas) > 0, "No DFAs provided"
@@ -29,7 +30,7 @@ class StrictSerialEnforcer:
         released = []
 
         for i, dfa in enumerate(self.dfas):
-            sigma_next = []  # σ' ← ε
+            sigma_next = []              # σ' ← ε
             qi = self.q[i]
             sigma_ci = self.sigma_c[i]
 

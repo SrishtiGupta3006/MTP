@@ -27,12 +27,12 @@ plt.rcParams.update({
 
 data = defaultdict(list)
 
-with open("performance_results.csv", "r") as f:
+with open("performance_results_avg.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         enforcer = row["Enforcer"].strip()
         size = int(row["Input Size"])
-        time_val = float(row["Total Time (s)"])
+        time_val = float(row["Average Time (s)"])
         data[enforcer].append((size, time_val))
 
 for k in data:
@@ -106,7 +106,7 @@ for title, enforcer_list in groups.items():
 
             plt.grid(True, linestyle="--", alpha=0.6)
             plt.legend()
-            plt.savefig("strict_enforcers_1.png")
+            plt.savefig("strict_enforcers_1_avg.png")
             plt.show()
         else:
             plt.close()
@@ -132,7 +132,7 @@ for title, enforcer_list in groups.items():
         plt.grid(True, linestyle="--", alpha=0.6)
         plt.legend()
 
-        filename = title.lower().replace(" ", "_") + ".png"
+        filename = title.lower().replace(" ", "_") + "_avg.png"
         plt.savefig(filename)
         plt.show()
         print(f"Saved {filename}")

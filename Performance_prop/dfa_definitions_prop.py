@@ -79,6 +79,7 @@ def Strict_serial_phi2():
         ['left']
     )
 
+
 def Strict_serial_phi3():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -93,6 +94,7 @@ def Strict_serial_phi3():
         lambda q, a: transition_dict[(q, a)],
         ['back']
     )
+
 
 def Strict_serial_phi4():
 
@@ -109,6 +111,7 @@ def Strict_serial_phi4():
         ['forward']
     )
 
+
 def Strict_serial_phi5():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -123,6 +126,7 @@ def Strict_serial_phi5():
         lambda q, a: transition_dict[(q, a)],
         ['back', 'left']
     )
+
 
 def Strict_serial_phi6():
 
@@ -139,6 +143,7 @@ def Strict_serial_phi6():
         ['forward','left']
     )
 
+
 def Strict_serial_phi7():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -153,6 +158,7 @@ def Strict_serial_phi7():
         lambda q, a: transition_dict[(q, a)],
         ['right','left']
     )
+
 
 def Strict_serial_phi8():
 
@@ -169,6 +175,7 @@ def Strict_serial_phi8():
         ['forward','back']
     )
 
+
 def Strict_serial_phi9():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -183,6 +190,7 @@ def Strict_serial_phi9():
         lambda q, a: transition_dict[(q, a)],
         ['right', 'back']
     )
+
 
 def Strict_serial_phi10():
 
@@ -199,6 +207,7 @@ def Strict_serial_phi10():
         ['left', 'back']
     )
 
+
 def Strict_serial_phi11():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -213,6 +222,7 @@ def Strict_serial_phi11():
         lambda q, a: transition_dict[(q, a)],
         ['right', 'forward']
     )
+
 
 def Strict_serial_phi12():
 
@@ -229,6 +239,7 @@ def Strict_serial_phi12():
         ['back', 'forward']
     )
 
+
 def Strict_serial_phi13():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -243,6 +254,7 @@ def Strict_serial_phi13():
         lambda q, a: transition_dict[(q, a)],
         ['back', 'stop']
     )
+
 
 def Strict_serial_phi14():
 
@@ -278,6 +290,7 @@ def get_all_Strict_serial_dfas():
         Strict_serial_phi13(),
         Strict_serial_phi14(),
     ]
+
 
 # ======================================================
 # STRICT MONOLITHIC PROPERTY DFAs
@@ -338,6 +351,7 @@ def Strict_mono_phi1():
         []
     )
 
+
 def Strict_mono_phi2():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -369,6 +383,7 @@ def Strict_mono_phi3():
         []
     )
 
+
 def Strict_mono_phi4():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -383,6 +398,7 @@ def Strict_mono_phi4():
         lambda q, a: transition_dict[(q, a)],
         []
     )
+
 
 def Strict_mono_phi5():
 
@@ -399,6 +415,7 @@ def Strict_mono_phi5():
         []
     )
 
+
 def Strict_mono_phi6():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -413,6 +430,7 @@ def Strict_mono_phi6():
         lambda q, a: transition_dict[(q, a)],
         []
     )
+
 
 def Strict_mono_phi7():
 
@@ -429,6 +447,7 @@ def Strict_mono_phi7():
         []
     )
 
+
 def Strict_mono_phi8():
 
     states = ['start', 'right', 'left', 'forward', 'back', 'stop']
@@ -443,6 +462,7 @@ def Strict_mono_phi8():
         lambda q, a: transition_dict[(q, a)],
         []
     )
+
 
 def Strict_mono_phi9():
 
@@ -474,6 +494,7 @@ def Strict_mono_phi10():
         lambda q,a: transition_dict[(q,a)],
         []
     )
+
 
 def get_all_Strict_mono_dfas():
 
@@ -551,6 +572,7 @@ def Strict_parallel_phi1():
         ['right']
     )
 
+
 def Strict_parallel_phi2():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -565,6 +587,7 @@ def Strict_parallel_phi2():
         lambda q, a: transition_dict[(q, a)],
         ['left']
     )
+
 
 def Strict_parallel_phi3():
 
@@ -581,6 +604,7 @@ def Strict_parallel_phi3():
         ['back']
     )
 
+
 def Strict_parallel_phi4():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -595,6 +619,7 @@ def Strict_parallel_phi4():
         lambda q, a: transition_dict[(q, a)],
         ['forward']
     )
+
 
 def Strict_parallel_phi5():
 
@@ -611,6 +636,7 @@ def Strict_parallel_phi5():
         ['right', 'left']
     )
 
+
 def Strict_parallel_phi6():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -625,6 +651,7 @@ def Strict_parallel_phi6():
         lambda q, a: transition_dict[(q, a)],
         ['right', 'back']
     )
+
 
 def Strict_parallel_phi7():
 
@@ -641,6 +668,7 @@ def Strict_parallel_phi7():
         ['right','forward']
     )
 
+
 def Strict_parallel_phi8():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -655,6 +683,7 @@ def Strict_parallel_phi8():
         lambda q, a: transition_dict[(q, a)],
         ['left','back']
     )
+
 
 def Strict_parallel_phi9():
 
@@ -671,6 +700,7 @@ def Strict_parallel_phi9():
         ['forward','back']
     )
 
+
 def Strict_parallel_phi10():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -685,6 +715,7 @@ def Strict_parallel_phi10():
         lambda q, a: transition_dict[(q, a)],
         ['left','forward']
     )
+
 
 def Strict_parallel_phi11():
 
@@ -701,6 +732,7 @@ def Strict_parallel_phi11():
         ['back','forward']
     )
 
+
 def Strict_parallel_phi12():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -715,6 +747,7 @@ def Strict_parallel_phi12():
         lambda q, a: transition_dict[(q, a)],
         ['back','stop']
     )
+
 
 def Strict_parallel_phi13():
 
@@ -731,6 +764,7 @@ def Strict_parallel_phi13():
         ['back','start']
     )
 
+
 def Strict_parallel_phi14():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -745,6 +779,7 @@ def Strict_parallel_phi14():
         lambda q, a: transition_dict[(q, a)],
         ['left','start']
     )
+
 
 def get_all_Strict_parallel_dfas():
 
@@ -825,6 +860,7 @@ def LE_mono_phi1():
         ['right']
     )
 
+
 def LE_mono_phi2():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -839,6 +875,7 @@ def LE_mono_phi2():
         lambda q, a: transition_dict[(q, a)],
         ['left']
     )
+
 
 def LE_mono_phi3():
 
@@ -855,6 +892,7 @@ def LE_mono_phi3():
         ['back']
     )
 
+
 def LE_mono_phi4():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -870,6 +908,7 @@ def LE_mono_phi4():
         ['forward']
     )
 
+
 def LE_mono_phi5():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -884,6 +923,7 @@ def LE_mono_phi5():
         lambda q, a: transition_dict[(q, a)],
         ['right', 'left']
     )
+
 
 def LE_mono_phi6():
 
@@ -901,6 +941,22 @@ def LE_mono_phi6():
     )
 
 
+def LE_mono_phi7():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = LE_mono_transitions()
+
+    return PropertyDFA(
+        "phi7",
+        ['r', 'l', 'f', 'b', 's'],
+        states,
+        'start',
+        lambda q: q in {'right', 'back'},
+        lambda q, a: transition_dict[(q, a)],
+        ['right', 'back']
+    )
+
+
 def get_all_LE_mono_dfas():
 
     return [
@@ -910,6 +966,7 @@ def get_all_LE_mono_dfas():
         LE_mono_phi4(),
         LE_mono_phi5(),
         LE_mono_phi6(),
+        LE_mono_phi7(),
     ]
 
 
@@ -972,6 +1029,7 @@ def LE_parallel_phi1():
         ['right']
     )
 
+
 def LE_parallel_phi2():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -986,6 +1044,7 @@ def LE_parallel_phi2():
         lambda q, a: transition_dict[(q, a)],
         ['right', 'left']
     )
+
 
 def LE_parallel_phi3():
 
@@ -1002,6 +1061,7 @@ def LE_parallel_phi3():
         ['left', 'forward']
     )
 
+
 def LE_parallel_phi4():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -1016,6 +1076,7 @@ def LE_parallel_phi4():
         lambda q, a: transition_dict[(q, a)],
         ['left']
     )
+
 
 def LE_parallel_phi5():
 
@@ -1032,6 +1093,7 @@ def LE_parallel_phi5():
         ['left', 'back']
     )
 
+
 def LE_parallel_phi6():
 
     states = ['stop', 'start', 'right', 'left', 'forward', 'back']
@@ -1047,6 +1109,23 @@ def LE_parallel_phi6():
         ['back', 'right']
     )
 
+
+def LE_parallel_phi7():
+
+    states = ['stop', 'start', 'right', 'left', 'forward', 'back']
+    transition_dict = LE_parallel_transitions()
+
+    return PropertyDFA(
+        "phi7",
+        ['r','l','f','b','s'],
+        states,
+        'start',
+        lambda q: q in ['left'],
+        lambda q, a: transition_dict[(q, a)],
+        ['left']
+    )
+
+
 def get_all_LE_parallel_dfas():
 
     return [
@@ -1056,6 +1135,7 @@ def get_all_LE_parallel_dfas():
         LE_parallel_phi4(),
         LE_parallel_phi5(),
         LE_parallel_phi6(),
+        LE_parallel_phi7(),
     ]
 
 
@@ -1108,6 +1188,7 @@ def exclusive_phi2():
 
     return A2, {"n"}
 
+
 # A3 : decides on 'r'
 def exclusive_phi3():
 
@@ -1129,6 +1210,7 @@ def exclusive_phi3():
     A3.name = "A3"
 
     return A3, {"r"}
+
 
 # A4 : decides on 'o'
 def exclusive_phi4():
@@ -1152,6 +1234,7 @@ def exclusive_phi4():
 
     return A4, {"o"}
 
+
 # A5 : decides on 'f'
 def exclusive_phi5():
 
@@ -1173,6 +1256,7 @@ def exclusive_phi5():
     A5.name = "A5"
 
     return A5, {"f"}
+
 
 # A6 : decides on 'r'
 def exclusive_phi6():
@@ -1196,6 +1280,7 @@ def exclusive_phi6():
 
     return A6, {"r"}
 
+
 # A7 : decides on 'o'
 def exclusive_phi7():
 
@@ -1218,6 +1303,7 @@ def exclusive_phi7():
 
     return A7, {"o"}
 
+
 # A8 : decides on 'n'
 def exclusive_phi8():
 
@@ -1239,6 +1325,7 @@ def exclusive_phi8():
     A8.name = "A8"
 
     return A8, {"n"}
+
 
 # A9 : decides on 'l'
 def exclusive_phi9():
@@ -1283,6 +1370,7 @@ def exclusive_phi10():
     A10.name = "A10"
     return A10, {"n"}
 
+
 def get_all_dfas():
 
     return [
@@ -1296,6 +1384,4 @@ def get_all_dfas():
         exclusive_phi8(),
         exclusive_phi9(),
         exclusive_phi10(),
-
     ]
-

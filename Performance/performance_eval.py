@@ -14,7 +14,7 @@ import io
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
-# Import DFA definitions 
+# Import DFA definitions
 
 from helper.dfa_definitions import (
     get_all_Strict_mono_dfas,
@@ -94,6 +94,7 @@ enforcers = {
 }
 
 INPUT_SIZES = [100, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+NUM_RUNS = 20
 
 # Helpers
 
@@ -112,7 +113,6 @@ def time_enforcer(enf, enf_type, input_list):
 
     elif enf_type == "strict_monolithic":
         enf = StrictMonolithicEnforcer(strict_mono_dfas)
-        
         t0 = time.time()
         for a in input_list:
             enf.step(a)
@@ -137,9 +137,7 @@ def time_enforcer(enf, enf_type, input_list):
         return time.time() - t0
 
     elif enf_type == "exclusive_monolithic":
-
         mono_enf = ExclusiveMonolithicEnforcer(mono_dfa)
-
         t0 = time.time()
         for a in input_list:
             mono_enf.step(a)
@@ -151,27 +149,34 @@ def time_enforcer(enf, enf_type, input_list):
             enf.step(a)
         return time.time() - t0
 
-
 # -------------------------------------------------
-# Run evaluation
+# Run evaluation (20 runs, average)
 # -------------------------------------------------
 
 results = []
 
 for name, cfg in enforcers.items():
     print(f"\n----- {name} -----")
+
     for n in INPUT_SIZES:
-        enf = cfg["factory"]()
-        seq = generate_input(cfg["alphabet"], n)
-        total = time_enforcer(enf, cfg["type"], seq)
-        print(f"{name} | {n} events | {total:.6f} sec")
-        results.append([name, n, total])
+        times = []
+
+        for _ in range(NUM_RUNS):
+            enf = cfg["factory"]()
+            seq = generate_input(cfg["alphabet"], n)
+            total = time_enforcer(enf, cfg["type"], seq)
+            times.append(total)
+
+        avg_time = sum(times) / NUM_RUNS
+
+        print(f"{name} | {n} events | avg {avg_time:.6f} sec")
+        results.append([name, n, avg_time])
 
 # Save CSV
 
-with open("performance_results_1.csv", "w", newline="") as f:
+with open("performance_results_avg.csv", "w", newline="") as f:
     writer = csv.writer(f)
-    writer.writerow(["Enforcer", "Input Size", "Total Time (s)"])
+    writer.writerow(["Enforcer", "Input Size", "Average Time (s)"])
     writer.writerows(results)
 
-print("\nSaved performance_results_1.csv")
+print("\nSaved performance_results_avg.csv")

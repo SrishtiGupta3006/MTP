@@ -5,6 +5,7 @@ output_LE_parallel.py
 
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 from helper.dfa_definitions import (
@@ -14,8 +15,8 @@ from helper.dfa_definitions import (
 )
 from Source.least_effort_parallel import LeastEffortParallelEnforcer
 
-# Load DFAs
 
+# Load DFAs
 enforcers = [
     LE_parallel_phi1(),
     LE_parallel_phi2(),

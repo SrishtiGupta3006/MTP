@@ -4,7 +4,9 @@ least_effort_mono.py
 """
 
 import sys, os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from helper.product import product_or
 
 def least_effort_monolithic_enforcer(name, *D):

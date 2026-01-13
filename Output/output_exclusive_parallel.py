@@ -1,4 +1,7 @@
-# output_exclusive_parallel.py
+#!/usr/bin/env python3
+"""
+output_exclusive_parallel.py
+"""
 
 import sys
 import os
@@ -13,7 +16,7 @@ from helper.exclusive_modified_automata import get_all_exclusive_modified
 # get ALL modified DFAs A′₁, …, A′ₙ
 modified_dfas = get_all_exclusive_modified()
 
-# Exclusive Parallel Enforcer over modified DFAs (Algorithm 7)
+# Exclusive Parallel Enforcer over modified DFAs
 enf = ExclusiveParallelEnforcer(modified_dfas)
 
 print("Interactive Exclusive Parallel Enforcer")

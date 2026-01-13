@@ -15,7 +15,7 @@ from Source.least_effort_mono import least_effort_monolithic_enforcer
 phi1 = LE_mono_phi1()
 phi2 = LE_mono_phi2()
 
-# Least Effort Monolithic Enforcer (OR-Product) ------------------------
+# Least Effort Monolithic Enforcer (OR-Product)
 enforcer_fn = least_effort_monolithic_enforcer("OR_Product", phi1, phi2)
 
 running_output = []

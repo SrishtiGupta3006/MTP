@@ -27,12 +27,12 @@ plt.rcParams.update({
 
 data = defaultdict(list)
 
-with open("performance_properties_new.csv", "r") as f:
+with open("performance_properties_avg_1.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         enforcer = row["Enforcer"].strip()
         num_props = int(row["Num_Properties"])
-        time_us = float(row["Total_Time (microseconds)"])
+        time_us = float(row["Avg_Time (microseconds)"])
         data[enforcer].append((num_props, time_us))
 
 # Sort by number of properties
@@ -91,7 +91,7 @@ for title, enforcer_list in groups.items():
             continue
 
         if title == "Strict Enforcers":
-            filtered = [(p, t) for p, t in data[enf] if p >= 3]
+            filtered = [(p, t) for p, t in data[enf] if p >= 5]
         else:
             filtered = data[enf]
 
@@ -111,7 +111,7 @@ for title, enforcer_list in groups.items():
         plt.grid(True, linestyle="--", alpha=0.6)
         plt.legend()
 
-        filename = title.lower().replace(" ", "_") + "_new.png"
+        filename = title.lower().replace(" ", "_") + "_avg_1.png"
         plt.savefig(filename)
         plt.show()
         print(f"Saved {filename}")
