@@ -36,7 +36,7 @@ from Source.strict_serial import StrictSerialEnforcer
 from Source.strict_parallel import StrictParallelEnforcer
 
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
-from Source.exclusive_parallel import ExclusiveParallelEnforcer
+from Source.exclusive_parallel_1_opt import ExclusiveParallelEnforcer
 
 from helper.product import product
 
@@ -174,9 +174,9 @@ for name, cfg in enforcers.items():
 
 # Save CSV
 
-with open("performance_results_avg.csv", "w", newline="") as f:
+with open("performance_results_avg_opt.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(["Enforcer", "Input Size", "Average Time (s)"])
     writer.writerows(results)
 
-print("\nSaved performance_results_avg.csv")
+print("\nSaved performance_results_avg_opt.csv")

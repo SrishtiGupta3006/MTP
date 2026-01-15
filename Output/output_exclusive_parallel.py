@@ -6,10 +6,10 @@ output_exclusive_parallel.py
 import sys
 import os
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, project_root)
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(PROJECT_ROOT)
 
-from Source.exclusive_parallel import ExclusiveParallelEnforcer
+from Source.exclusive_parallel_1_opt import ExclusiveParallelEnforcer
 from helper.exclusive_modified_automata import get_all_exclusive_modified
 
 
