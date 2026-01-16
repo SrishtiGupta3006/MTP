@@ -106,7 +106,7 @@ for title, enforcer_list in groups.items():
 
             plt.grid(True, linestyle="--", alpha=0.6)
             plt.legend()
-            plt.savefig("strict_enforcers_1_avg_opt.png")
+            plt.savefig("strict_enforcers_1_avg.png")
             plt.show()
         else:
             plt.close()
@@ -132,7 +132,7 @@ for title, enforcer_list in groups.items():
         plt.grid(True, linestyle="--", alpha=0.6)
         plt.legend()
 
-        filename = title.lower().replace(" ", "_") + "_avg_opt.png"
+        filename = title.lower().replace(" ", "_") + "_avg.png"
         plt.savefig(filename)
         plt.show()
         print(f"Saved {filename}")

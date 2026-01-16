@@ -12,9 +12,7 @@ import os
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
-# -------------------------------------------------
 # Imports
-# -------------------------------------------------
 
 from Performance_prop.dfa_definitions_prop import (
     get_all_Strict_mono_dfas,
