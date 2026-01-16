@@ -27,7 +27,7 @@ plt.rcParams.update({
 
 data = defaultdict(list)
 
-with open("performance_properties_avg_1.csv", "r") as f:
+with open("performance_properties_avg_opt.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         enforcer = row["Enforcer"].strip()
@@ -111,7 +111,7 @@ for title, enforcer_list in groups.items():
         plt.grid(True, linestyle="--", alpha=0.6)
         plt.legend()
 
-        filename = title.lower().replace(" ", "_") + "_avg_1.png"
+        filename = title.lower().replace(" ", "_") + "_avg_opt.png"
         plt.savefig(filename)
         plt.show()
         print(f"Saved {filename}")

@@ -35,7 +35,7 @@ from Source.strict_serial import StrictSerialEnforcer
 from Source.strict_parallel import StrictParallelEnforcer
 
 from Source.exclusive_mono import ExclusiveMonolithicEnforcer
-from Source.exclusive_parallel import ExclusiveParallelEnforcer
+from Source.exclusive_parallel_opt import ExclusiveParallelEnforcer
 
 # -------------------------------------------------
 # Load ALL DFAs
@@ -177,7 +177,6 @@ for name in ENFORCER_ORDER:
         # Run experiment NUM_RUNS times and average
         # -------------------------------------------------
 
-        # Warm-up run (reduces cold-start noise)
         _ = time_enforcer(enf, enf_type, generate_input(alphabet, INPUT_SIZE))
 
         times = []
@@ -200,7 +199,7 @@ for name in ENFORCER_ORDER:
 # Save CSV (averaged results)
 # -------------------------------------------------
 
-with open("performance_properties_avg_1.csv", "w", newline="") as f:
+with open("performance_properties_avg_opt.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow([
         "Enforcer",
@@ -210,4 +209,4 @@ with open("performance_properties_avg_1.csv", "w", newline="") as f:
     ])
     writer.writerows(results)
 
-print("\nSaved performance_properties_avg_1.csv")
+print("\nSaved performance_properties_avg_opt.csv")

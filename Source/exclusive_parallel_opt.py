@@ -1,40 +1,11 @@
 #!/usr/bin/env python3
 """
 exclusive_parallel.py
-
-Optimized Exclusive Parallel Enforcer.
-
-Key semantics (as requested):
-
-- Each enforcer i maintains:
-    σc_i : local buffer of pending (not yet accepted) events
-    σs_i : accumulated locally accepted output (persistent until global release)
-    q_i  : DFA state after all events in σs_i have been consumed
-
-- Local rule:
-    For each incoming event a:
-        If δ*(q_i, σc_i · a) reaches an accepting state:
-            σs_i ← σs_i · (σc_i · a)
-            σc_i ← ε
-            q_i  ← new DFA state
-        Else:
-            σc_i ← σc_i · a
-
-- GLOBAL OPTIMIZATION (your rule):
-    If ALL σc_i are empty at the end of a step,
-    then all σs_i are guaranteed to be identical.
-    Hence:
-        • emit σs once (taken from enforcer 1)
-        • clear σs_i for all enforcers
-
-This avoids O(n·|σs|) equality checks between σs_i
-and reduces global synchronization cost.
 """
 
 import sys
 import os
 
-# Ensure local imports resolve correctly
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from helper.Automata import DFA
@@ -57,7 +28,6 @@ def dfa_run(dfa: DFA, q, word):
 def dfa_accepts_from(dfa: DFA, q, word):
     """
     Check whether DFA accepts when starting from state q
-    and reading 'word'.
 
     Returns:
         (accepts: bool, q_end: state)
@@ -72,12 +42,9 @@ def dfa_accepts_from(dfa: DFA, q, word):
 
 class ExclusiveParallelEnforcer:
     def __init__(self, dfa_list):
-        """
-        Initialize the exclusive parallel enforcer.
+        
+        # Initialize the exclusive parallel enforcer.
 
-        Args:
-            dfa_list : list of exclusive-modified DFAs
-        """
         self.dfas = dfa_list
         self.n = len(dfa_list)
 
@@ -91,25 +58,13 @@ class ExclusiveParallelEnforcer:
         self.sigma_s = [[] for _ in range(self.n)]
 
     def reset(self):
-        """
-        Reset all enforcers to initial configuration.
-        """
+        # Reset all enforcers to initial configuration.
         self.q = [dfa.q0 for dfa in self.dfas]
         self.sigma_c = [[] for _ in range(self.n)]
         self.sigma_s = [[] for _ in range(self.n)]
 
     def step(self, a):
-        """
-        Process one input event a.
 
-        Returns:
-            output      : list of globally released symbols
-            debug_info  : per-enforcer internal state snapshot
-        """
-
-        # --------------------------------------------
-        # Debug snapshot (used by interactive driver)
-        # --------------------------------------------
         if a == "":
             debug_info = []
             for i in range(self.n):
@@ -123,9 +78,7 @@ class ExclusiveParallelEnforcer:
 
         debug_info = []
 
-        # --------------------------------------------
         # Local update for each enforcer
-        # --------------------------------------------
         for i in range(self.n):
             dfa = self.dfas[i]
             qi = self.q[i]
@@ -157,15 +110,9 @@ class ExclusiveParallelEnforcer:
             })
 
         # --------------------------------------------
-        # GLOBAL RELEASE OPTIMIZATION (your idea)
+        # GLOBAL RELEASE OPTIMIZATION
         # --------------------------------------------
-        # If all σc_i are empty, then all σs_i are identical.
-        # Therefore:
-        #   • emit σs once
-        #   • clear σs for all enforcers
-        #
-        # This avoids explicit σs equality checks.
-        # --------------------------------------------
+
         if all(len(c) == 0 for c in self.sigma_c):
             output = list(self.sigma_s[0])  # representative output
 
